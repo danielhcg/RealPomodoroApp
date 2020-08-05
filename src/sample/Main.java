@@ -13,17 +13,23 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 // Classes I imported that didn't come with the sample
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.Group;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.paint.Color;
+import static javafx.scene.text.FontWeight.*;
 
 import java.io.IOException;
 
 import static javafx.scene.paint.Color.rgb;
+
 
 public class Main extends Application {
 
@@ -40,6 +46,8 @@ public class Main extends Application {
         Button longBreakButton= new Button("Long Break");
         Button loopButton = new Button("Loop");
 
+
+
         // Creating a label node.
         Label titleLabel = new Label("Pomodoro Timer");
 
@@ -52,9 +60,12 @@ public class Main extends Application {
         // Setting spacing in between "upperBox" nodes
         //upperBox.setSpacing(10.5);
 
-
-        // Creating a color object
+        // Creating a color object for title text of what is popup text nodes
+        Color titleTextColor = rgb(165, 43, 52);
+        // Creating a color object for the background
         Color backgroundColor = rgb(197, 94, 94);
+        // Creating color object for button background
+        Color buttonBackground = rgb(255, 237, 229);
         // creating a background fill
         BackgroundFill backgroundFill = new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY);
         // creating a background
@@ -62,6 +73,8 @@ public class Main extends Application {
         // set background to gridpane
         gridPane.setBackground(backGround);
 
+        // Styling button nodes
+        //customTimerButton.setStyle("-fx-background-color: titleTextColor;");
 
 
         // Adding nodes to pane
@@ -86,8 +99,6 @@ public class Main extends Application {
                 // Opening a new window what button is clicked
                 try {
 
-
-
                     Stage whatIsStage = new Stage();
                     whatIsStage.setTitle("What is a Pomodoro Timer?");
 
@@ -101,11 +112,11 @@ public class Main extends Application {
                             "\n" +
                             "How to use Pomodoro/ Tomato timers:\n" +
                             "\n 1. Decide task to be done set timers to 25 minutes for one Pomodoro\n" +
-                            " 2. Work on task until timer is complete\n" +
-                            " 3. After timer completion, put a checkmark on to-do list\n" +
-                            " 4. Take a 5 minutes short break\n" +
-                            " 5. After four \"Pomodoros\" take a long break\n" +
-                            " 6. Repeat to step 1\n" +
+                            "\n 2. Work on task until timer is complete\n" +
+                            "\n 3. After timer completion, put a checkmark on to-do list\n" +
+                            "\n 4. Take a 5 minutes short break\n" +
+                            "\n 5. After four \"Pomodoros\" take a long break\n" +
+                            "\n 6. Repeat to step 1\n" +
                             "\nUSE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW\n";
 
                     // Declaring paragraph title string variables
@@ -116,16 +127,16 @@ public class Main extends Application {
                     // Declaring paragraph string variables
                     String onlinePTimerParagraph = "TomatoTimers is a customizable and easy to use looping " +
                             "pomodoro timer to boost your efficiency.";
-                    String aboutParagraph = "Pomodoro™ Technique is a time management method developed by " +
-                            "Francesco Cirillo in the late 1980s. This technique use timer to break down " +
-                            "works into a set of intervals separated by breaks. Pomodoro technique increases " +
+                    String aboutParagraph = "Pomodoro Technique is a time management method developed by " +
+                            "Francesco Cirillo in the late 1980s. \nThis technique use timer to break down " +
+                            "works into a set of intervals separated by breaks. Pomodoro \ntechnique increases " +
                             "productivity by taking short scheduled breaks regularly.";
-                    String howToParagraph = " 1. Decide task to be done set timers to 25 minutes for one Pomodoro" +
-                                            " 2. Work on task until timer is complete" +
-                                            " 3. After timer completion, put a checkmark on to-do list" +
-                                            " 4. Take a 5 minutes short break" +
-                                            " 5. After four Pomodoro take a long break" +
-                                            " 6. Repeat step 1" +
+                    String howToParagraph = " 1. Decide task to be done set timers to 25 minutes for one Pomodoro\n" +
+                                            " 2. Work on task until timer is complete\n" +
+                                            " 3. After timer completion, put a checkmark on to-do list\n" +
+                                            " 4. Take a 5 minutes short break\n" +
+                                            " 5. After four Pomodoro take a long break\n" +
+                                            " 6. Repeat step 1\n\n" +
                                             "USE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW";
 
                     // Creating text objects and Storing paragraph and title string variables in text objects
@@ -137,20 +148,40 @@ public class Main extends Application {
                     Text para3 = new Text(howToParagraph);
 
                     // Setting the positions of the texts
-                    title1.setX(50);
-                    title1.setY(75);
-                    para1.setX(50);
-                    para1.setY(100);
+                    title1.setX(17);
+                    title1.setY(35);
+                    para1.setX(17);
+                    para1.setY(60);
 
-                    title2.setX(50);
-                    title2.setY(125);
-                    para2.setX(50);
-                    para2.setY(150);
+                    title2.setX(17);
+                    title2.setY(85);
+                    para2.setX(17);
+                    para2.setY(110);
 
-                    title3.setX(50);
-                    title3.setY(175);
-                    para3.setX(50);
-                    para3.setY(200);
+                    title3.setX(17);
+                    title3.setY(170);
+                    para3.setX(17);
+                    para3.setY(195);
+
+                    // Setting fonts of title text objects
+                    title1.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+                    title2.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+                    title3.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+
+                    // Setting color of title text objects
+                    title1.setFill(titleTextColor);
+                    title2.setFill(titleTextColor);
+                    title3.setFill(titleTextColor);
+
+                    // Setting font stylings for paragraphs objects
+                    para1.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                    para2.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                    para3.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
+
+                    // Setting color of paragraph text
+                    para1.setFill(backgroundColor);
+                    para2.setFill(backgroundColor);
+                    para3.setFill(backgroundColor);
 
 
                     whatIsText.setText(description);
@@ -169,13 +200,12 @@ public class Main extends Application {
                     // Adding background color to pane
                     whatIsPane.setBackground(whatIsBackGround);
 
-                    whatIsStage.setScene(new Scene(whatIsPane, 798, 543));
+                    whatIsStage.setScene(new Scene(whatIsPane, 615, 330));
                     whatIsStage.show();
 
                 } finally {
 
                 }
-
             }
         };
         // Adding even filter for what is button click
