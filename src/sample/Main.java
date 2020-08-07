@@ -25,9 +25,12 @@ import javafx.scene.Group;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import static javafx.scene.text.FontWeight.*;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import static javafx.scene.paint.Color.rgb;
@@ -78,6 +81,65 @@ public class Main extends Application {
         // Styling button nodes
         //customTimerButton.setStyle("-fx-background-color: titleTextColor;");
 
+        // Picture
+        // Passing FileInputStream object as a parameter
+        FileInputStream iStream1 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage1.png");
+        Image studyImage = new Image(iStream1);
+        FileInputStream iStream2 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\mainColor.png");
+        Image mainColorImage = new Image(iStream2);
+        FileInputStream iStream3 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage1.png");
+        Image shortBreakImage1 = new Image(iStream3);
+        FileInputStream iStream4 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage.png");
+        Image longBreakImage = new Image(iStream4);
+        FileInputStream iStream5 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage2.png");
+        Image shortBreakImage2 = new Image(iStream5);
+
+        // Passing the image to a constructor
+        ImageView iView = new ImageView(studyImage);
+        // setting the fit height and width of the image view
+        iView.setFitHeight(250);
+        iView.setFitWidth(250);
+
+        // Event handler for short break button
+        EventHandler<MouseEvent> changeShortBreakImage = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                iView.setImage(shortBreakImage1);
+
+            }
+        };
+        // Adding event filter for short break timer button click
+        shortBreakButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changeShortBreakImage);
+
+        // Event handler for long break button
+        EventHandler<MouseEvent> changeLongBreakImage = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                iView.setImage(longBreakImage);
+            }
+        };
+        // Adding event filter for custom timer button click
+        longBreakButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImage);
+
+        // Event handler for loop button
+        EventHandler<MouseEvent> changeLoopImage = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                iView.setImage(studyImage);
+            }
+        };
+        // Adding event filter for custom timer button click
+        loopButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLoopImage);
+
+        // Event handler for main pomodoro  button
+        EventHandler<MouseEvent> changePImage = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                iView.setImage(studyImage);
+            }
+        };
+        // Adding event filter for custom timer button click
+        pomodoroButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changePImage);
 
         // Adding nodes to pane
         gridPane.add(titleLabel,       0, 0);
@@ -88,6 +150,7 @@ public class Main extends Application {
         gridPane.add(shortBreakButton,1, 1);
         gridPane.add(longBreakButton, 2, 1);
         gridPane.add(loopButton,      3, 1);
+        gridPane.add(iView, 0, 2);
 
         // Setting spacing between nodes on gridpane
         gridPane.setHgap(10);
