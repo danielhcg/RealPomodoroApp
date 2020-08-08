@@ -27,6 +27,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import java.lang.Thread;
 import javafx.scene.paint.Color;
 import static javafx.scene.text.FontWeight.*;
 
@@ -104,8 +105,59 @@ public class Main extends Application {
         EventHandler<MouseEvent> changeShortBreakImage = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                iView.setImage(shortBreakImage1);
+            Thread t1 = new Thread();
+            Thread t2 = new Thread();
 
+                /*
+                for(int i = 0; i<=4;i++){
+                    System.out.println("AAAAAAAAAAAAA");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("BBBBBBBBBBBBBB");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } */
+
+//                int num = 0;
+//                while (num < 4) {
+//                    System.out.println("AAAAAAAAAAA");
+//                    //iView.setImage(shortBreakImage1);
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    System.out.println("BBBBBBBBBB");
+//                    //iView.setImage(shortBreakImage2);
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    num++;
+//                }
+
+                //iView.setImage(shortBreakImage1);    // Display first image
+
+                try {                                // sleep 1 second
+                    t2.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                iView.setImage(shortBreakImage1);   // Display second image
+
+                try {                                // sleep 1 second
+                    t2.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                iView.setImage(shortBreakImage2);
             }
         };
         // Adding event filter for short break timer button click
