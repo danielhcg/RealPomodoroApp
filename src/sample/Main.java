@@ -105,59 +105,34 @@ public class Main extends Application {
         EventHandler<MouseEvent> changeShortBreakImage = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-            Thread t1 = new Thread();
-            Thread t2 = new Thread();
 
-                /*
-                for(int i = 0; i<=4;i++){
-                    System.out.println("AAAAAAAAAAAAA");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("BBBBBBBBBBBBBB");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } */
+                int x = 0;
 
-//                int num = 0;
-//                while (num < 4) {
-//                    System.out.println("AAAAAAAAAAA");
-//                    //iView.setImage(shortBreakImage1);
+                //iView.setImage(shortBreakImage1);
+
+//                if (5 < 10) {
 //                    try {
-//                        Thread.sleep(1000);
+//                        Thread.sleep(3000);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
-//                    System.out.println("BBBBBBBBBB");
-//                    //iView.setImage(shortBreakImage2);
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    num++;
 //                }
+                //iView.setImage(shortBreakImage2);
 
-                //iView.setImage(shortBreakImage1);    // Display first image
+                //Thread t1 = new Thread(new Tuna(iView, shortBreakImage1, shortBreakImage2));
+                //t1.start();
 
-                try {                                // sleep 1 second
-                    t2.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+
+                while (x < 4) {
+                    iView.setImage(shortBreakImage1);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {}
+                    iView.setImage(shortBreakImage2);
+                    x++;
                 }
-                iView.setImage(shortBreakImage1);   // Display second image
 
-                try {                                // sleep 1 second
-                    t2.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                iView.setImage(shortBreakImage2);
             }
         };
         // Adding event filter for short break timer button click
@@ -221,20 +196,7 @@ public class Main extends Application {
 
                     // Text to display discription of what is window purpose
                     Text whatIsText = new Text();
-                    String description = "Online Pomodoro Timer\n\n" +
-                            "TomatoTimers is a customizable and easy to use looping pomodoro timer to boost \nyour efficiency.\n" +
-                            "\n" +
-                            "About Pomodoro Technique\n" +
-                            "Pomodoro™ Technique is a time management method developed by \nFrancesco Cirillo in the late 1980s. This technique use timer to break down works \ninto a set of intervals separated by breaks. Pomodoro technique increases \nproductivity by taking short scheduled breaks regularly.\n" +
-                            "\n" +
-                            "How to use Pomodoro/ Tomato timers:\n" +
-                            "\n 1. Decide task to be done set timers to 25 minutes for one Pomodoro\n" +
-                            "\n 2. Work on task until timer is complete\n" +
-                            "\n 3. After timer completion, put a checkmark on to-do list\n" +
-                            "\n 4. Take a 5 minutes short break\n" +
-                            "\n 5. After four \"Pomodoros\" take a long break\n" +
-                            "\n 6. Repeat to step 1\n" +
-                            "\nUSE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW\n";
+
 
                     // Declaring paragraph title string variables
                     String onlinePTimer    = "Online Pomodoro Timer";
@@ -301,7 +263,7 @@ public class Main extends Application {
                     para3.setFill(backgroundColor);
 
 
-                    whatIsText.setText(description);
+
 
                     Group whatIsGroup = new Group(whatIsText);
 
@@ -407,6 +369,29 @@ public class Main extends Application {
         //sfsdf
     }
 
+    public class Tuna implements Runnable {
+
+        ImageView a;
+        Image b, c;
+
+        public Tuna (ImageView x, Image y, Image z) {
+            a = x;
+            b = y;
+            c = z;
+        };
+
+        public void run(){
+            int x = 1;
+            try {
+                while (x!=3) {
+                    a.setImage(c);
+                    Thread.sleep(1000);
+                    a.setImage(b);
+                    x++;
+                }
+            } catch (Exception e) {}
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);
