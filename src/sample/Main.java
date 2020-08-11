@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -26,6 +27,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.event.ActionEvent;
+
 
 import java.io.FileNotFoundException;
 import java.lang.Thread;
@@ -105,6 +108,30 @@ public class Main extends Application {
         iView.setFitHeight(250);
         iView.setFitWidth(250);
 
+        // Creating a group node
+        Group shortBreakGroup;
+
+        // Place short break images into ImageView Nodes
+        ImageView shortBreakNode1 = new ImageView(shortBreakImage1);
+        ImageView shortBreakNode2 = new ImageView(shortBreakImage2);
+
+        // instantiate an object called shortBreak
+        shortBreakGroup = new Group(shortBreakNode1);
+
+        // Animate shortbreak images in a loop
+        Timeline t = new Timeline();
+        t.setCycleCount(Timeline.INDEFINITE);
+
+        // Add images into the timeline
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.seconds(1),
+                (ActionEvent event) -> {
+                    shortBreakGroup.getChildren().setAll(shortBreakNode2);
+                }
+        ));
+
+        t.play();
+
         // Event handler for short break button
         EventHandler<MouseEvent> changeShortBreakImage = new EventHandler<MouseEvent>() {
             @Override
@@ -143,7 +170,9 @@ public class Main extends Application {
                 // Defining 2 key values to populate the area we are trying to put
                 // a picture in
                 KeyValue oneValue = new KeyValue(iView.opacityProperty(), 0);
-                //KeyValue twoValue = new KeyValue(iView.setImage(shortBreakImage2));
+                KeyValue twoValue;
+                //twoValue = new KeyValue(iView.setImage(shortBreakImage2));
+
 
                 // Defining 2 keyframe objects for each step of the animation
                 KeyFrame keyFrame1 = new KeyFrame(Duration.seconds(1), oneValue);
@@ -154,7 +183,7 @@ public class Main extends Application {
                 // To play animation indefinitely
                 shortTime.setCycleCount(Timeline.INDEFINITE);
                 // Adding created keyFrames to the timeline
-                shortTime.getKeyFrames().addAll(keyFrame1, keyFrame2);
+                shortTime.getKeyFrames().addAll(keyFrame1);
                 // Execute the animation
                 shortTime.play();
 
