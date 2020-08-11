@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -27,15 +26,22 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.FileNotFoundException;
 import java.lang.Thread;
 import javafx.scene.paint.Color;
 import static javafx.scene.text.FontWeight.*;
+import javafx.animation.Timeline;
+import javafx.scene.Node;
+import javafx.animation.KeyValue;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Time;
 
 import static javafx.scene.paint.Color.rgb;
-
 
 public class Main extends Application {
 
@@ -51,8 +57,6 @@ public class Main extends Application {
         Button shortBreakButton = new Button("Short Break");
         Button longBreakButton= new Button("Long Break");
         Button loopButton = new Button("Loop");
-
-
 
         // Creating a label node.
         Label titleLabel = new Label("Pomodoro Timer");
@@ -106,9 +110,10 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
-                int x = 0;
 
-                //iView.setImage(shortBreakImage1);
+                //int x = 0;
+
+                iView.setImage(shortBreakImage1);
 
 //                if (5 < 10) {
 //                    try {
@@ -124,14 +129,34 @@ public class Main extends Application {
 
 
 
-                while (x < 4) {
-                    iView.setImage(shortBreakImage1);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception e) {}
-                    iView.setImage(shortBreakImage2);
-                    x++;
-                }
+//                while (x < 4) {
+//                    iView.setImage(shortBreakImage1);
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (Exception e) {}
+//                    iView.setImage(shortBreakImage2);
+//                    x++;
+//                }
+
+                /**Creating the 2 key frames that the Timeline will cycle through**/
+
+                // Defining 2 key values to populate the area we are trying to put
+                // a picture in
+                KeyValue oneValue = new KeyValue(iView.opacityProperty(), 0);
+                //KeyValue twoValue = new KeyValue(iView.setImage(shortBreakImage2));
+
+                // Defining 2 keyframe objects for each step of the animation
+                KeyFrame keyFrame1 = new KeyFrame(Duration.seconds(1), oneValue);
+                KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1));
+
+                // Creating a new timeline
+                Timeline shortTime = new Timeline();
+                // To play animation indefinitely
+                shortTime.setCycleCount(Timeline.INDEFINITE);
+                // Adding created keyFrames to the timeline
+                shortTime.getKeyFrames().addAll(keyFrame1, keyFrame2);
+                // Execute the animation
+                shortTime.play();
 
             }
         };
