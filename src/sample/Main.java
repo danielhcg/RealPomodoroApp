@@ -28,6 +28,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
+import javafx.scene.control.ToggleButton;
+import javafx.beans.binding.Bindings;
+
+
 
 
 import java.io.FileNotFoundException;
@@ -61,6 +65,9 @@ public class Main extends Application {
         Button longBreakButton= new Button("Long Break");
         Button loopButton = new Button("Loop");
 
+
+
+
         // Creating a label node.
         Label titleLabel = new Label("Pomodoro Timer");
 
@@ -92,31 +99,108 @@ public class Main extends Application {
         // Picture
         // Passing FileInputStream object as a parameter
         FileInputStream iStream1 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage1.png");
-        Image studyImage = new Image(iStream1);
+        Image studyImage1 = new Image(iStream1);
+
         FileInputStream iStream2 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\mainColor.png");
         Image mainColorImage = new Image(iStream2);
+
         FileInputStream iStream3 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage1.png");
         Image shortBreakImage1 = new Image(iStream3);
+
         FileInputStream iStream4 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage.png");
         Image longBreakImage = new Image(iStream4);
+
         FileInputStream iStream5 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage2.png");
         Image shortBreakImage2 = new Image(iStream5);
 
+        FileInputStream iStream6 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage2.png");
+        Image studyImage2 = new Image(iStream6);
+
+        //
+        FileInputStream iStream7 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage2.png");
+        Image longBreakImage2 = new Image(iStream7);
+
+        FileInputStream iStream8 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\titleImage.png");
+        Image titleImage = new Image(iStream8);
+        ImageView titleView = new ImageView(titleImage);
+
+
+        // Creating a custom toggle button for the loop button-----------------------------------------
+
+        // Bringing in the photos for the toggling effect into the code
+        FileInputStream iStream9 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLoop.png");
+        Image selectedLoop = new Image(iStream9);
+        FileInputStream iStream10 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLoop.png");
+        Image unselectedLoop = new Image(iStream10);
+
+        ToggleButton loopToggle = new ToggleButton(); // Creating a new toggle button
+        ImageView loopToggleIV = new ImageView();     // Creating an ImageView to add to the Grid Pane
+        loopToggle.setGraphic(loopToggleIV);          // Setting graphic of toggle to the Image View
+
+        loopToggleIV.imageProperty().bind(Bindings
+                .when(loopToggle.selectedProperty())
+                .then(selectedLoop)
+                .otherwise(unselectedLoop)
+        );
+
+        // Now alls thats left to do is add the toggle button to the grid pane
+
+        // Last line of module------------------------------------------------------------------------
+
+        // Creating a custom toggle button for the long break button----------------------------------
+
+        // Brining in the photos fro the toggling effect into the code
+        FileInputStream iStream11 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLongBreak.png");
+        Image selectedLongBreak = new Image(iStream11); // Setting iStream to photo
+
+        FileInputStream iStream12 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLongBreak.png");
+        Image unselectedLongBreak = new Image(iStream12); // Setting iStream to photo
+
+        ToggleButton longBreakToggle = new ToggleButton();    // Creating a new toggle button
+        ImageView longBreakToggleImageView = new ImageView(); // Creating an ImageView to add to the Grid Pane
+        longBreakToggle.setGraphic(longBreakToggleImageView);
+
+        longBreakToggleImageView.imageProperty().bind(Bindings
+                .when(longBreakToggle.selectedProperty())
+                .then(selectedLongBreak)
+                .otherwise(unselectedLongBreak)
+        );
+
+        // Now add the long break toggle button to the grid pane
+
+        // Last line of module------------------------------------------------------------------------
+
+
+
         // Passing the image to a constructor
-        ImageView iView = new ImageView(studyImage);
+        ImageView iView = new ImageView(studyImage1);
         // setting the fit height and width of the image view
         iView.setFitHeight(250);
         iView.setFitWidth(250);
 
         // Creating a group node
-        Group shortBreakGroup;
+        Group tomato;
 
         // Place short break images into ImageView Nodes
-        ImageView shortBreakNode1 = new ImageView(shortBreakImage1);
-        ImageView shortBreakNode2 = new ImageView(shortBreakImage2);
+        ImageView tomato1 = new ImageView(studyImage1);
+        ImageView tomato2 = new ImageView(studyImage2);
+
+        // Set the size of the images
+        tomato1.setFitHeight(250);
+        tomato1.setFitWidth(250);
+
+        tomato2.setFitHeight(250);
+        tomato2.setFitWidth(250);
 
         // instantiate an object called shortBreak
-        shortBreakGroup = new Group(shortBreakNode1);
+        tomato = new Group(tomato1);
+
+        // Place tomato in specific coordinates
+        tomato.setTranslateX(50);
+        tomato.setTranslateY(2);
+
 
         // Animate shortbreak images in a loop
         Timeline t = new Timeline();
@@ -124,69 +208,41 @@ public class Main extends Application {
 
         // Add images into the timeline
         t.getKeyFrames().add(new KeyFrame(
-                Duration.seconds(1),
+                Duration.seconds(1.0),
                 (ActionEvent event) -> {
-                    shortBreakGroup.getChildren().setAll(shortBreakNode2);
+                    tomato.getChildren().setAll(tomato2);
+                }
+        ));
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.seconds(2.0),
+                (ActionEvent event) -> {
+                    tomato.getChildren().setAll(tomato1);
                 }
         ));
 
         t.play();
 
+
+        /**Setting images on button clicks for display image area*/
+        // Event handler for main pomodoro button
+        EventHandler<MouseEvent> changePImage = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // Change current image to main pomodoro image
+                tomato1.setImage(studyImage1);
+                tomato2.setImage(studyImage2);
+            }
+        };
+        // Adding event filter main pomodoro button click
+        pomodoroButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changePImage);
+
         // Event handler for short break button
         EventHandler<MouseEvent> changeShortBreakImage = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-
-
-                //int x = 0;
-
-                iView.setImage(shortBreakImage1);
-
-//                if (5 < 10) {
-//                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-                //iView.setImage(shortBreakImage2);
-
-                //Thread t1 = new Thread(new Tuna(iView, shortBreakImage1, shortBreakImage2));
-                //t1.start();
-
-
-
-//                while (x < 4) {
-//                    iView.setImage(shortBreakImage1);
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (Exception e) {}
-//                    iView.setImage(shortBreakImage2);
-//                    x++;
-//                }
-
-                /**Creating the 2 key frames that the Timeline will cycle through**/
-
-                // Defining 2 key values to populate the area we are trying to put
-                // a picture in
-                KeyValue oneValue = new KeyValue(iView.opacityProperty(), 0);
-                KeyValue twoValue;
-                //twoValue = new KeyValue(iView.setImage(shortBreakImage2));
-
-
-                // Defining 2 keyframe objects for each step of the animation
-                KeyFrame keyFrame1 = new KeyFrame(Duration.seconds(1), oneValue);
-                KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1));
-
-                // Creating a new timeline
-                Timeline shortTime = new Timeline();
-                // To play animation indefinitely
-                shortTime.setCycleCount(Timeline.INDEFINITE);
-                // Adding created keyFrames to the timeline
-                shortTime.getKeyFrames().addAll(keyFrame1);
-                // Execute the animation
-                shortTime.play();
-
+                // Change current image to short break image
+                tomato1.setImage(shortBreakImage1);
+                tomato2.setImage(shortBreakImage2);
             }
         };
         // Adding event filter for short break timer button click
@@ -196,42 +252,65 @@ public class Main extends Application {
         EventHandler<MouseEvent> changeLongBreakImage = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                iView.setImage(longBreakImage);
+                // Change current image to long break image
+                tomato1.setImage(longBreakImage);
+                tomato2.setImage(longBreakImage2);
             }
         };
-        // Adding event filter for custom timer button click
+        // Adding event filter for long break button click
         longBreakButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImage);
+
+        // Event handler for long break toggle button
+        EventHandler<MouseEvent> changeLongBreakImageToggle = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // Change current image to long break image
+                tomato1.setImage(longBreakImage);
+                tomato2.setImage(longBreakImage2);
+            }
+        };
+        // Adding event filter for long break button click
+        longBreakToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImageToggle);
 
         // Event handler for loop button
         EventHandler<MouseEvent> changeLoopImage = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                iView.setImage(studyImage);
+                // Change current image to main pomodoro image / looping image
+                tomato1.setImage(studyImage1);
+                tomato2.setImage(studyImage2);
             }
         };
-        // Adding event filter for custom timer button click
+        // Adding event filter for loop button click
         loopButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLoopImage);
 
-        // Event handler for main pomodoro  button
-        EventHandler<MouseEvent> changePImage = new EventHandler<MouseEvent>() {
+        // Event handler for toggled loop button
+        EventHandler<MouseEvent> changeToggleLoopImage = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                iView.setImage(studyImage);
+                // Change current image to main pomodoro image / looping image
+                tomato1.setImage(studyImage1);
+                tomato2.setImage(studyImage2);
             }
         };
-        // Adding event filter for custom timer button click
-        pomodoroButton.addEventFilter(MouseEvent.MOUSE_CLICKED, changePImage);
+        // Adding event filter for loop button click
+        loopToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeToggleLoopImage);
 
-        // Adding nodes to pane
-        gridPane.add(titleLabel,       0, 0);
+
+
+        // Adding nodes to pane          column    row
+        gridPane.add(titleView,        0, 0);
         gridPane.add(customTimerButton,1, 0);
         gridPane.add(whatIsButton,     2, 0);
 
-        gridPane.add(pomodoroButton,  0, 1);
-        gridPane.add(shortBreakButton,1, 1);
-        gridPane.add(longBreakButton, 2, 1);
-        gridPane.add(loopButton,      3, 1);
-        gridPane.add(iView, 0, 2);
+        gridPane.add(pomodoroButton,   0, 1);
+        gridPane.add(shortBreakButton, 1, 1);
+        //gridPane.add(longBreakButton,  2, 1);
+        //gridPane.add(loopButton,      3, 1);
+        //gridPane.add(iView, 0, 2);
+        gridPane.add(tomato,            0,2);
+        gridPane.add(loopToggle,        3,1);
+        gridPane.add(longBreakToggle,   2,1);
 
         // Setting spacing between nodes on gridpane
         gridPane.setHgap(10);
