@@ -144,6 +144,9 @@ public class Main extends Application {
                 .otherwise(unselectedLoop)
         );
 
+        // Creating inset length for button borders
+        Insets inset1 = new Insets(0.0);
+
         // Now alls thats left to do is add the toggle button to the grid pane
 
         // Last line of module------------------------------------------------------------------------
@@ -209,6 +212,7 @@ public class Main extends Application {
         ToggleButton mainToggle = new ToggleButton();   // Creating a new toggle button for main Pomodoro button
         ImageView mainImageView = new ImageView();      // Creating a new Image View for main Pomodoro button
         mainToggle.setGraphic(mainImageView);           // Setting button graphic to toggle Image View
+        mainToggle.setPadding(inset1);
 
         mainImageView.imageProperty().bind(Bindings
             .when(mainToggle.selectedProperty())
@@ -234,6 +238,7 @@ public class Main extends Application {
         ToggleButton whatIsToggle = new ToggleButton();  // Creating a new toggle button for the what is button
         ImageView whatIsImageView= new ImageView();      // Creating a new Image View for what is button
         whatIsToggle.setGraphic(whatIsImageView);
+        whatIsToggle.setPadding(inset1);
 
         whatIsImageView.imageProperty().bind(Bindings
             .when(whatIsToggle.selectedProperty())
@@ -255,6 +260,7 @@ public class Main extends Application {
         ToggleButton customTimerToggleButton = new ToggleButton();
         ImageView customTimerImageView = new ImageView();
         customTimerToggleButton.setGraphic(customTimerImageView);
+        customTimerToggleButton.setPadding(inset1);
 
         customTimerImageView.imageProperty().bind(Bindings
             .when(customTimerToggleButton.selectedProperty())
@@ -395,6 +401,7 @@ public class Main extends Application {
         //gridPane.add(mainToggle, 0, 3);
         //gridPane.add(customTimerToggleButton, 0, 3);
 
+
         gridPane.add(bindingExample, 3, 0);
 
         // Setting spacing between nodes on gridpane
@@ -422,11 +429,44 @@ public class Main extends Application {
                     characterText.setPromptText("Enter the name of the character here.");
 
                     // Creating actor label
+                    Label actorLabel = new Label("Actor's Name: ");
+                    actorLabel.setMinWidth(100);
+                    actorLabel.setAlignment(Pos.BOTTOM_RIGHT);
 
+                    // Creating actor Text Field
+                    TextField actorTxt = new TextField();
+                    actorTxt.setMinWidth(200);
+                    actorTxt.setMaxWidth(200);
+                    actorTxt.setPromptText("Enter the name of the actor here.");
 
-                    VBox pane = new VBox();
+                    // Creating the role labels
+                    Label role1 = new Label("The role of ");
+                    Label role2 = new Label();
+                    Label role3 = new Label(" will be played by ");
+                    Label role4 = new Label();
+
+                    // Creating the character pane
+                    HBox characterPane = new HBox(20, characterLabel, characterText);
+                    characterPane.setPadding(new Insets(10));
+
+                    // Creating the actor pane
+                    HBox actorPane = new HBox(20, actorLabel, actorTxt);
+                    actorPane.setPadding(new Insets(10));
+
+                    // Creating role pane
+                    HBox rolePane = new HBox(role1, role2, role3, role4);
+                    rolePane.setPadding(new Insets(10));
+
+                    // Adding character and actor panes to vBox
+                    VBox pane = new VBox(10, actorPane, characterPane, rolePane);
+
+                    // Creating the binding
+                    role2.textProperty().bind(characterText.textProperty());
+                    role4.textProperty().bind(actorTxt.textProperty());
+
                     Stage bindingStage = new Stage();
                     Scene bindingScene = new Scene(pane);
+                    bindingStage.setScene(bindingScene);
                     bindingStage.show();
 
                 } finally {
