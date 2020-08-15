@@ -8,7 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,16 +19,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 // Classes I imported that didn't come with the sample
-import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.Group;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ToggleButton;
 import javafx.beans.binding.Bindings;
 
 
@@ -272,7 +269,15 @@ public class Main extends Application {
 
         // End of module------------------------------------------------------------------------------
 
-
+        // Creating a new toggle group
+        ToggleGroup toggleGroup = new ToggleGroup();
+        // Adding toggle buttons to the toggleGroup
+        customTimerToggleButton.setToggleGroup(toggleGroup);
+        whatIsToggle.setToggleGroup(toggleGroup);
+        mainToggle.setToggleGroup(toggleGroup);
+        shortBreakToggle.setToggleGroup(toggleGroup);
+        longBreakToggle.setToggleGroup(toggleGroup);
+        loopToggle.setToggleGroup(toggleGroup);
 
         // Passing the image to a constructor
         ImageView iView = new ImageView(studyImage1);
@@ -408,6 +413,7 @@ public class Main extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
+
         // Event handler for binding example button
         EventHandler<MouseEvent> bindingHandler = new EventHandler<MouseEvent>() {
 
@@ -417,53 +423,67 @@ public class Main extends Application {
 
                     // Window body
 
-                    // Creating character label
-                    Label characterLabel = new Label("Character's Name: ");
-                    characterLabel.setMinWidth(100);
-                    characterLabel.setAlignment(Pos.BOTTOM_RIGHT);
+                    // Creating the toggles
+                    ToggleButton toggle1 = new ToggleButton();
+                    ToggleButton toggle2 = new ToggleButton();
+                    ToggleButton toggle3 = new ToggleButton();
+                    ToggleButton toggle4 = new ToggleButton();
 
-                    // Creating character textfield
-                    TextField characterText = new TextField();
-                    characterText.setMinWidth(200);
-                    characterText.setMaxWidth(200);
-                    characterText.setPromptText("Enter the name of the character here.");
+                    // Creating a new toggle group
+                    ToggleGroup toggleGroup = new ToggleGroup();
 
-                    // Creating actor label
-                    Label actorLabel = new Label("Actor's Name: ");
-                    actorLabel.setMinWidth(100);
-                    actorLabel.setAlignment(Pos.BOTTOM_RIGHT);
+                    // Setting toggles to the group
+                    toggle1.setToggleGroup(toggleGroup);
+                    toggle2.setToggleGroup(toggleGroup);
+                    toggle3.setToggleGroup(toggleGroup);
+                    toggle4.setToggleGroup(toggleGroup);
 
-                    // Creating actor Text Field
-                    TextField actorTxt = new TextField();
-                    actorTxt.setMinWidth(200);
-                    actorTxt.setMaxWidth(200);
-                    actorTxt.setPromptText("Enter the name of the actor here.");
+                    // Creating the ImageViews to hold the images
+                    ImageView iView1 = new ImageView();
+                    ImageView iView2 = new ImageView();
+                    ImageView iView3 = new ImageView();
+                    ImageView iView4 = new ImageView();
 
-                    // Creating the role labels
-                    Label role1 = new Label("The role of ");
-                    Label role2 = new Label();
-                    Label role3 = new Label(" will be played by ");
-                    Label role4 = new Label();
+                    // Setting graphics to respective toggles
+                    toggle1.setGraphic(iView1);
+                    toggle2.setGraphic(iView2);
+                    toggle3.setGraphic(iView3);
+                    toggle4.setGraphic(iView4);
+
+
+                    // Creating the bindings
+                    iView1.imageProperty().bind(Bindings
+                        .when(toggle1.selectedProperty())
+                            .then(selectedCustom)
+                            .otherwise(unselectedCustom)
+                    );
+                    iView2.imageProperty().bind(Bindings
+                        .when(toggle2.selectedProperty())
+                            .then(selectedWhatIs)
+                            .otherwise(unselectedWhatIs)
+                    );
+                    iView3.imageProperty().bind(Bindings
+                        .when(toggle3.selectedProperty())
+                            .then(selectedLoop)
+                            .otherwise(unselectedLoop)
+                    );
+                    iView4.imageProperty().bind(Bindings
+                        .when(toggle4.selectedProperty())
+                            .then(selectedLongBreak)
+                            .otherwise(unselectedLongBreak)
+                    );
+
 
                     // Creating the character pane
-                    HBox characterPane = new HBox(20, characterLabel, characterText);
+                    HBox characterPane = new HBox(20, toggle2, toggle4);
                     characterPane.setPadding(new Insets(10));
 
                     // Creating the actor pane
-                    HBox actorPane = new HBox(20, actorLabel, actorTxt);
+                    HBox actorPane = new HBox(20, toggle1, toggle3);
                     actorPane.setPadding(new Insets(10));
 
-                    // Creating role pane
-                    HBox rolePane = new HBox(role1, role2, role3, role4);
-                    rolePane.setPadding(new Insets(10));
-
                     // Adding character and actor panes to vBox
-                    VBox pane = new VBox(10, actorPane, characterPane, rolePane);
-
-                    // Creating the binding
-                    role2.textProperty().bind(characterText.textProperty());
-                    role4.textProperty().bind(actorTxt.textProperty());
-
+                    VBox pane = new VBox(10, actorPane, characterPane);
                     Stage bindingStage = new Stage();
                     Scene bindingScene = new Scene(pane);
                     bindingStage.setScene(bindingScene);
@@ -475,6 +495,7 @@ public class Main extends Application {
             }
         };
         bindingExample.addEventFilter(MouseEvent.MOUSE_CLICKED, bindingHandler);
+
 
         // Creating the event handler to open a new information window when what is button is clicked
         EventHandler<MouseEvent> whatIsHandler = new EventHandler<MouseEvent>() {
