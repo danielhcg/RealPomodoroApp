@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 
@@ -51,6 +52,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+
+
+
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Pomodoro Timer");
 
@@ -64,7 +69,8 @@ public class Main extends Application {
 
         Button bindingExample = new Button("Binding Example");
 
-
+        // Creating inset length for button borders
+        Insets inset1 = new Insets(0.0);
 
         // Creating a label node.
         Label titleLabel = new Label("Pomodoro Timer");
@@ -134,6 +140,7 @@ public class Main extends Application {
         ToggleButton loopToggle = new ToggleButton(); // Creating a new toggle button
         ImageView loopToggleIV = new ImageView();     // Creating an ImageView to add to the Grid Pane
         loopToggle.setGraphic(loopToggleIV);          // Setting graphic of toggle to the Image View
+        loopToggle.setPadding(inset1);
 
         loopToggleIV.imageProperty().bind(Bindings
                 .when(loopToggle.selectedProperty())
@@ -141,8 +148,7 @@ public class Main extends Application {
                 .otherwise(unselectedLoop)
         );
 
-        // Creating inset length for button borders
-        Insets inset1 = new Insets(0.0);
+
 
         // Now alls thats left to do is add the toggle button to the grid pane
 
@@ -162,6 +168,7 @@ public class Main extends Application {
         ToggleButton longBreakToggle = new ToggleButton();    // Creating a new toggle button
         ImageView longBreakToggleImageView = new ImageView(); // Creating an ImageView to add to the Grid Pane
         longBreakToggle.setGraphic(longBreakToggleImageView);
+        longBreakToggle.setPadding(inset1);
 
         longBreakToggleImageView.imageProperty().bind(Bindings
                 .when(longBreakToggle.selectedProperty())
@@ -187,6 +194,7 @@ public class Main extends Application {
         ToggleButton shortBreakToggle = new ToggleButton();   // Creating a new toggle button for short break
         ImageView shortBreakImageView = new ImageView();      // Creating a new Image View for the short break
         shortBreakToggle.setGraphic(shortBreakImageView);     // Setting button graphic to toggle Image View
+        shortBreakToggle.setPadding(inset1);
 
         shortBreakImageView.imageProperty().bind(Bindings
             .when(shortBreakToggle.selectedProperty())
@@ -265,6 +273,143 @@ public class Main extends Application {
                 .otherwise(unselectedCustom)
         );
 
+        // To handle mouse hover over custom timer button
+        customTimerToggleButton.addEventHandler(MouseEvent.MOUSE_MOVED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Creating a new image view to hold the selected version of the custom button
+                        ImageView selectedCustomHover = new ImageView(selectedCustom);
+                        customTimerToggleButton.setGraphic(selectedCustomHover);
+                    }
+        });
+
+        // To handle when mouse leaves custom timer button hover zone
+        customTimerToggleButton.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Set custom timer ImageView back to the toggle image view
+                        customTimerToggleButton.setGraphic(customTimerImageView);
+                    }
+        });
+
+        // To handle when mouse hovers over the what is button
+        whatIsToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Creating a new ImageView to hold the selected version of the what is button
+                        ImageView selectedWhatIsHover = new ImageView(selectedWhatIs);
+                        whatIsToggle.setGraphic(selectedWhatIsHover);
+                    }
+                }
+        );
+
+        // To handle when mouse leaves what is button hover zone
+        whatIsToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Set the what is ImageView back to the toggle ImageView
+                        whatIsToggle.setGraphic(whatIsImageView);
+                    }
+                }
+        );
+
+        // To handle when mouse hovers over the main pomodoro button
+        mainToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Creating a new ImageView to hold the selected version of the main pomodoro button
+                        ImageView selectedMainPomHover = new ImageView(selectedMainPom);
+                        mainToggle.setGraphic(selectedMainPomHover);
+                    }
+                }
+        );
+
+        // To handle when mouse leaves main pomodoro button hover zone
+        mainToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Set the main Pomodoro ImageView back to the toggle ImageView
+                        mainToggle.setGraphic(mainImageView);
+                    }
+                }
+        );
+
+
+        // To handle when mouse hovers over the short break button
+        shortBreakToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Creating a new ImageView to hold the selected version of the short break button
+                        ImageView selectedShortBreakHover = new ImageView(selectedShortBreak);
+                        shortBreakToggle.setGraphic(selectedShortBreakHover);
+                    }
+                }
+        );
+
+        // To handle when mouse leaves main short break button hover zone
+        shortBreakToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Set the short break ImageView back to the toggle ImageView
+                        shortBreakToggle.setGraphic(shortBreakImageView);
+                    }
+                }
+        );
+
+
+        // To handle when mouse hovers over the long break button
+        longBreakToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Creating a new ImageView to hold the selected version of the long break button
+                        ImageView selectedLongBreakHover = new ImageView(selectedLongBreak);
+                        longBreakToggle.setGraphic(selectedLongBreakHover);
+                    }
+                }
+        );
+
+        // To handle when mouse leaves long break button hover zone
+        longBreakToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Set the long break ImageView back to the toggle ImageView
+                        longBreakToggle.setGraphic(longBreakToggleImageView);
+                    }
+                }
+        );
+
+        // To handle when mouse hovers over the long break button
+        loopToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Creating a new ImageView to hold the selected version of the long break button
+                        ImageView selectedLoopHover = new ImageView(selectedLoop);
+                        loopToggle.setGraphic(selectedLoopHover);
+                    }
+                }
+        );
+
+        // To handle when mouse leaves long break button hover zone
+        loopToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        // Set the long break ImageView back to the toggle ImageView
+                        loopToggle.setGraphic(loopToggleIV);
+                    }
+                }
+        );
 
 
         // End of module------------------------------------------------------------------------------
@@ -278,6 +423,9 @@ public class Main extends Application {
         shortBreakToggle.setToggleGroup(toggleGroup);
         longBreakToggle.setToggleGroup(toggleGroup);
         loopToggle.setToggleGroup(toggleGroup);
+
+
+
 
         // Passing the image to a constructor
         ImageView iView = new ImageView(studyImage1);
@@ -414,87 +562,90 @@ public class Main extends Application {
         gridPane.setVgap(10);
 
 
+        /**
         // Event handler for binding example button
         EventHandler<MouseEvent> bindingHandler = new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
+
                 try {
 
-                    // Window body
+                    // variable declarations
 
-                    // Creating the toggles
-                    ToggleButton toggle1 = new ToggleButton();
-                    ToggleButton toggle2 = new ToggleButton();
-                    ToggleButton toggle3 = new ToggleButton();
-                    ToggleButton toggle4 = new ToggleButton();
-
-                    // Creating a new toggle group
-                    ToggleGroup toggleGroup = new ToggleGroup();
-
-                    // Setting toggles to the group
-                    toggle1.setToggleGroup(toggleGroup);
-                    toggle2.setToggleGroup(toggleGroup);
-                    toggle3.setToggleGroup(toggleGroup);
-                    toggle4.setToggleGroup(toggleGroup);
-
-                    // Creating the ImageViews to hold the images
-                    ImageView iView1 = new ImageView();
-                    ImageView iView2 = new ImageView();
-                    ImageView iView3 = new ImageView();
-                    ImageView iView4 = new ImageView();
-
-                    // Setting graphics to respective toggles
-                    toggle1.setGraphic(iView1);
-                    toggle2.setGraphic(iView2);
-                    toggle3.setGraphic(iView3);
-                    toggle4.setGraphic(iView4);
+                    // private class constant and some variables
+                    private static final Integer STARTTIME = 15;
+                    private Timeline timeline;
+                    private Label timerLabel = new Label();
+                    private Integer timeSeconds = STARTTIME;
 
 
-                    // Creating the bindings
-                    iView1.imageProperty().bind(Bindings
-                        .when(toggle1.selectedProperty())
-                            .then(selectedCustom)
-                            .otherwise(unselectedCustom)
-                    );
-                    iView2.imageProperty().bind(Bindings
-                        .when(toggle2.selectedProperty())
-                            .then(selectedWhatIs)
-                            .otherwise(unselectedWhatIs)
-                    );
-                    iView3.imageProperty().bind(Bindings
-                        .when(toggle3.selectedProperty())
-                            .then(selectedLoop)
-                            .otherwise(unselectedLoop)
-                    );
-                    iView4.imageProperty().bind(Bindings
-                        .when(toggle4.selectedProperty())
-                            .then(selectedLongBreak)
-                            .otherwise(unselectedLongBreak)
-                    );
+                    Stage myStage = new Stage();
+                    Group root = new Group();
+                    Scene scene = new Scene(root, 300, 250);
+
+                    // label
+
+                    timerLabel.setText(timeSeconds.toString());
+                    timerLabel.setTextFill(Color.RED);
+                    timerLabel.setStyle("-fx-font-size: 4em;");
+
+                    // button
+                    Button button = new Button();
+                    button.setText("Start Timer");
+                    button.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            if (timeline != STARTTIME) {
+                                timeline.stop();
+                            }
+                            timeSeconds = STARTTIME;
+
+                            // update timer label
+                            timerLabel.setText(timeSeconds.toString());
+                            timeline.setCycleCount(Timeline.INDEFINITE);
+                            timeline.getKeyFrames().add(
+                                    new KeyFrame(Duration.seconds(1),
+                                            new EventHandler() {
+                                                @Override // KeyFrame event handler
+                                                public void handle(Event event) {
+                                                    timeSeconds--;
+                                                    //update timer label
+                                                    timerLabel.setText(timeSeconds.toString());
+                                                    if (timeSeconds <= 0) {
+                                                        timeline.stop();
+                                                    }
+                                                }
+                                            }));
+                            timeline.playFromStart();
+                        }
+                    });
+
+                    // Create and configure VBox
+                    // gap between components is 20
+                    VBox vb = new VBox(20);
+                    // center the components within VBox
+                    vb.setAlignment(Pos.CENTER);
+                    // Make it as wide as the application frame (scene)
+                    vb.setPrefWidth(scene.getWidth());
+                    // Move the VBox down a bit
+                    vb.setLayoutY(30);
+                    // Add the button and timerLabel to the VBox
+                    vb.getChildren().addAll(button, timerLabel);
+                    // Add the VBox to the root component
+                    root.getChildren().add(vb);
+
+                    myStage.setScene(scene);
+                    myStage.show();
 
 
-                    // Creating the character pane
-                    HBox characterPane = new HBox(20, toggle2, toggle4);
-                    characterPane.setPadding(new Insets(10));
-
-                    // Creating the actor pane
-                    HBox actorPane = new HBox(20, toggle1, toggle3);
-                    actorPane.setPadding(new Insets(10));
-
-                    // Adding character and actor panes to vBox
-                    VBox pane = new VBox(10, actorPane, characterPane);
-                    Stage bindingStage = new Stage();
-                    Scene bindingScene = new Scene(pane);
-                    bindingStage.setScene(bindingScene);
-                    bindingStage.show();
 
                 } finally {
 
                 }
             }
         };
-        bindingExample.addEventFilter(MouseEvent.MOUSE_CLICKED, bindingHandler);
+        bindingExample.addEventFilter(MouseEvent.MOUSE_CLICKED, bindingHandler);*/
 
 
         // Creating the event handler to open a new information window when what is button is clicked
