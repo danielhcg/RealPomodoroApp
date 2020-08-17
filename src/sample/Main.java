@@ -28,6 +28,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 
 
@@ -50,6 +52,12 @@ import static javafx.scene.paint.Color.rgb;
 
 public class Main extends Application {
 
+    // Variables for timer
+    private static final Integer STARTTIME = 15;
+    private Timeline timeline;
+    private Label timerLabel = new Label();
+    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
+
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -68,6 +76,7 @@ public class Main extends Application {
         Button loopButton = new Button("Loop");
 
         Button bindingExample = new Button("Binding Example");
+
 
         // Creating inset length for button borders
         Insets inset1 = new Insets(0.0);
@@ -534,7 +543,31 @@ public class Main extends Application {
         // Adding event filter for loop button click
         loopToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeToggleLoopImage);
 
+// Creating the short break timer
+        // Bind the timerLabel text property to the timeSeconds property
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.WHITE); // changing color of timer numbers
+        timerLabel.setStyle("-fx-font-size: 4em;");
 
+        // using the Long break toggle button 'longBreakToggle'
+
+        // Event handler for timer of 'longBreakToggle'
+        longBreakToggle.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (timeline != null) {
+                    timeline.stop();
+                }
+                timeSeconds.set(STARTTIME);
+                timeline = new Timeline();
+                timeline.getKeyFrames().add(
+                        new KeyFrame(Duration.seconds(STARTTIME+1),
+                        new KeyValue(timeSeconds, 0)));
+                timeline.playFromStart();
+            }
+        });
+
+// Module end
 
         // Adding nodes to pane          column    row
         gridPane.add(titleView,        0, 0);
@@ -553,6 +586,7 @@ public class Main extends Application {
         //gridPane.add(shortBreakToggle, 0, 3);
         //gridPane.add(mainToggle, 0, 3);
         //gridPane.add(customTimerToggleButton, 0, 3);
+        gridPane.add(timerLabel, 0, 3);
 
 
         gridPane.add(bindingExample, 3, 0);
@@ -562,7 +596,7 @@ public class Main extends Application {
         gridPane.setVgap(10);
 
 
-        /**
+/*
         // Event handler for binding example button
         EventHandler<MouseEvent> bindingHandler = new EventHandler<MouseEvent>() {
 
@@ -573,50 +607,51 @@ public class Main extends Application {
 
                     // variable declarations
 
-                    // private class constant and some variables
-                    private static final Integer STARTTIME = 15;
-                    private Timeline timeline;
-                    private Label timerLabel = new Label();
-                    private Integer timeSeconds = STARTTIME;
+                    // Constant start time
+                    final int STARTTIME = 15;
+                    Timeline timeline = new Timeline();
+                    Label timerLabel = new Label();
+                    int timeSeconds = STARTTIME;
 
-
+                    // Setting up the stage and the scene
                     Stage myStage = new Stage();
+                    myStage.setTitle("FX timer");
                     Group root = new Group();
                     Scene scene = new Scene(root, 300, 250);
 
                     // label
-
-                    timerLabel.setText(timeSeconds.toString());
+                    timerLabel.setText(Integer.toString(timeSeconds));
                     timerLabel.setTextFill(Color.RED);
                     timerLabel.setStyle("-fx-font-size: 4em;");
 
                     // button
                     Button button = new Button();
                     button.setText("Start Timer");
+
+
                     button.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
-                            if (timeline != STARTTIME) {
+                            if (timeline != null) {
                                 timeline.stop();
                             }
-                            timeSeconds = STARTTIME;
 
                             // update timer label
-                            timerLabel.setText(timeSeconds.toString());
+                            //timerLabel.setText(Integer.toString(timeSeconds));
                             timeline.setCycleCount(Timeline.INDEFINITE);
-                            timeline.getKeyFrames().add(
-                                    new KeyFrame(Duration.seconds(1),
-                                            new EventHandler() {
-                                                @Override // KeyFrame event handler
-                                                public void handle(Event event) {
-                                                    timeSeconds--;
-                                                    //update timer label
-                                                    timerLabel.setText(timeSeconds.toString());
-                                                    if (timeSeconds <= 0) {
-                                                        timeline.stop();
-                                                    }
-                                                }
-                                            }));
+
+                            KeyFrame keyFrame = new KeyFrame(
+                                    Duration.seconds(1),
+                                    new EventHandler() {
+                                        public void handle(Event event) {
+                                            if (timeSeconds <= 0) {
+                                                timeline.stop();
+                                            }
+                                        }
+                                    }
+                            );
+
+                            timeline.getKeyFrames().add(keyFrame);
                             timeline.playFromStart();
                         }
                     });
