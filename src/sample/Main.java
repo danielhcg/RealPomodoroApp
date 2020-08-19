@@ -1,23 +1,23 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.ImageInput;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import java.lang.Thread;
+import javafx.animation.Timeline;
+import javafx.animation.KeyValue;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
+import java.io.FileInputStream;
+import static javafx.scene.paint.Color.rgb;
 
 // Classes I imported that didn't come with the sample
 import javafx.scene.text.Text;
@@ -32,28 +32,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 
-
-
-import java.io.FileNotFoundException;
-import java.lang.Thread;
-import javafx.scene.paint.Color;
-import static javafx.scene.text.FontWeight.*;
-import javafx.animation.Timeline;
-import javafx.scene.Node;
-import javafx.animation.KeyValue;
-import javafx.animation.KeyFrame;
-import javafx.util.Duration;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.Time;
-
-import static javafx.scene.paint.Color.rgb;
-
 public class Main extends Application {
 
     // Variables for timer
-    private static final Integer STARTTIME = 15;
+    private static final Integer STARTTIME = 1500;
     private Timeline timeline;
     private Label timerLabel = new Label();
     private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
@@ -61,92 +43,73 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        /**-------------------------------------Variable Declarations-------------------------------------------*/
 
+        // Creating colors to use in app
+        Color darkRedColor = rgb(165, 43, 52);
+        Color lightRedColor = rgb(197, 94, 94);
+        Color offWhiteColor = rgb(255, 237, 229);
 
-
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Pomodoro Timer");
-
-        // Creating button nodes.
-        Button customTimerButton = new Button("Custom Timer");
-        Button whatIsButton = new Button("What is Pomodoro Timer?");
-        Button pomodoroButton = new Button("Pomodoro");
-        Button shortBreakButton = new Button("Short Break");
-        Button longBreakButton= new Button("Long Break");
-        Button loopButton = new Button("Loop");
-
-        Button bindingExample = new Button("Binding Example");
-
-
-        // Creating inset length for button borders
+        // Creating inset length for button borders, not sure why they appear when I import the images
         Insets inset1 = new Insets(0.0);
 
-        // Creating a label node.
-        Label titleLabel = new Label("Pomodoro Timer");
-
-        // Creating a grid pane
-        GridPane gridPane = new GridPane();
-
-        // Creating an object of the hbox class to store custom timer and what is buttons.
-        //HBox upperBox = new HBox();
-
-        // Setting spacing in between "upperBox" nodes
-        //upperBox.setSpacing(10.5);
-
-        // Creating a color object for title text of what is popup text nodes
-        Color titleTextColor = rgb(165, 43, 52);
-        // Creating a color object for the background
-        Color backgroundColor = rgb(197, 94, 94);
-        // Creating color object for button background
-        Color buttonBackground = rgb(255, 237, 229);
-        // creating a background fill
-        BackgroundFill backgroundFill = new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY);
-        // creating a background
-        Background backGround = new Background(backgroundFill);
-        // set background to gridpane
-        gridPane.setBackground(backGround);
-
-        // Styling button nodes
-        //customTimerButton.setStyle("-fx-background-color: titleTextColor;");
-
-        // Picture
-        // Passing FileInputStream object as a parameter
-        FileInputStream iStream1 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage1.png");
-        Image studyImage1 = new Image(iStream1);
-
-        FileInputStream iStream2 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\mainColor.png");
-        Image mainColorImage = new Image(iStream2);
-
-        FileInputStream iStream3 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage1.png");
-        Image shortBreakImage1 = new Image(iStream3);
-
-        FileInputStream iStream4 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage.png");
-        Image longBreakImage = new Image(iStream4);
-
-        FileInputStream iStream5 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage2.png");
-        Image shortBreakImage2 = new Image(iStream5);
-
-        FileInputStream iStream6 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage2.png");
-        Image studyImage2 = new Image(iStream6);
-
-        //
-        FileInputStream iStream7 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage2.png");
-        Image longBreakImage2 = new Image(iStream7);
-
+        // Images to be used throughout the app
         FileInputStream iStream8 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\titleImage.png");
-        Image titleImage = new Image(iStream8);
+        Image titleImage = new Image(iStream8);       // Title image
+        FileInputStream iStream1 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage1.png");
+        Image studyImage1 = new Image(iStream1);      // Main tomato image 1
+        FileInputStream iStream6 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage2.png");
+        Image studyImage2 = new Image(iStream6);      // Main tomato image 2
+        FileInputStream iStream3 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage1.png");
+        Image shortBreakImage1 = new Image(iStream3); // Short break tomato image 1
+        FileInputStream iStream5 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage2.png");
+        Image shortBreakImage2 = new Image(iStream5); // Short break tomato image 2
+        FileInputStream iStream4 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage.png");
+        Image longBreakImage = new Image(iStream4);   // Long break tomato image 1
+        FileInputStream iStream7 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage2.png");
+        Image longBreakImage2 = new Image(iStream7);  // Long break tomato image 2
+        FileInputStream iStream9 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLoop.png");
+        Image selectedLoop = new Image(iStream9);     // Selected loop button image
+        FileInputStream iStream10 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLoop.png");
+        Image unselectedLoop = new Image(iStream10);  // Unselected loop button image
+        FileInputStream iStream11 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLongBreak.png");
+        Image selectedLongBreak = new Image(iStream11); // Selected long break button image
+        FileInputStream iStream12 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLongBreak.png");
+        Image unselectedLongBreak = new Image(iStream12); // Unselected long break button image
+
+
+        /**----------------------------------------------Nodes-----------------------------------------------------*/
         ImageView titleView = new ImageView(titleImage);
+
+
+        primaryStage.setTitle("Pomodoro Timer");
+        // Creating a grid pane
+        GridPane root = new GridPane();
+        // Creating a dark red background to set to the main stage
+        Background darkRedBackground = new Background(new BackgroundFill(lightRedColor, CornerRadii.EMPTY, Insets.EMPTY));
+        // Set the color of the background
+        root.setBackground(darkRedBackground);
+
+
+
 
 
         // Creating a custom toggle button for the loop button-----------------------------------------
 
         // Bringing in the photos for the toggling effect into the code
-        FileInputStream iStream9 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLoop.png");
-        Image selectedLoop = new Image(iStream9);
-        FileInputStream iStream10 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLoop.png");
-        Image unselectedLoop = new Image(iStream10);
 
+        ToggleButton pomodoroToggle = new ToggleButton();   // Creating a new toggle button for main Pomodoro button
+        ToggleButton shortBreakToggle = new ToggleButton();   // Creating a new toggle button for short break
+        ToggleButton longBreakToggle = new ToggleButton();    // Creating a new toggle button
         ToggleButton loopToggle = new ToggleButton(); // Creating a new toggle button
+        ToggleButton whatIsToggle = new ToggleButton();  // Creating a new toggle button for the what is button
+        ToggleButton customTimerToggleButton = new ToggleButton();
+
+
+
+
+
+
         ImageView loopToggleIV = new ImageView();     // Creating an ImageView to add to the Grid Pane
         loopToggle.setGraphic(loopToggleIV);          // Setting graphic of toggle to the Image View
         loopToggle.setPadding(inset1);
@@ -166,15 +129,8 @@ public class Main extends Application {
         // Creating a custom toggle button for the long break button----------------------------------
 
         // Brining in the photos fro the toggling effect into the code
-        FileInputStream iStream11 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLongBreak.png");
-        Image selectedLongBreak = new Image(iStream11); // Setting iStream to photo
 
-        FileInputStream iStream12 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLongBreak.png");
-        Image unselectedLongBreak = new Image(iStream12); // Setting iStream to photo
 
-        ToggleButton longBreakToggle = new ToggleButton();    // Creating a new toggle button
         ImageView longBreakToggleImageView = new ImageView(); // Creating an ImageView to add to the Grid Pane
         longBreakToggle.setGraphic(longBreakToggleImageView);
         longBreakToggle.setPadding(inset1);
@@ -200,7 +156,6 @@ public class Main extends Application {
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedShortBreak.png");
         Image unselectedShortBreak = new Image(iStream14);
 
-        ToggleButton shortBreakToggle = new ToggleButton();   // Creating a new toggle button for short break
         ImageView shortBreakImageView = new ImageView();      // Creating a new Image View for the short break
         shortBreakToggle.setGraphic(shortBreakImageView);     // Setting button graphic to toggle Image View
         shortBreakToggle.setPadding(inset1);
@@ -223,13 +178,12 @@ public class Main extends Application {
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedMainPom.png");
         Image unselectedMainPom = new Image(iStream16);
 
-        ToggleButton mainToggle = new ToggleButton();   // Creating a new toggle button for main Pomodoro button
         ImageView mainImageView = new ImageView();      // Creating a new Image View for main Pomodoro button
-        mainToggle.setGraphic(mainImageView);           // Setting button graphic to toggle Image View
-        mainToggle.setPadding(inset1);
+        pomodoroToggle.setGraphic(mainImageView);           // Setting button graphic to toggle Image View
+        pomodoroToggle.setPadding(inset1);
 
         mainImageView.imageProperty().bind(Bindings
-            .when(mainToggle.selectedProperty())
+            .when(pomodoroToggle.selectedProperty())
                 .then(selectedMainPom)
                 .otherwise(unselectedMainPom)
         );
@@ -249,7 +203,6 @@ public class Main extends Application {
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedWhatIs.png");
         Image unselectedWhatIs = new Image(iStream18);
 
-        ToggleButton whatIsToggle = new ToggleButton();  // Creating a new toggle button for the what is button
         ImageView whatIsImageView= new ImageView();      // Creating a new Image View for what is button
         whatIsToggle.setGraphic(whatIsImageView);
         whatIsToggle.setPadding(inset1);
@@ -271,7 +224,6 @@ public class Main extends Application {
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedCustom.png");
         Image selectedCustom = new Image(iStream20);
 
-        ToggleButton customTimerToggleButton = new ToggleButton();
         ImageView customTimerImageView = new ImageView();
         customTimerToggleButton.setGraphic(customTimerImageView);
         customTimerToggleButton.setPadding(inset1);
@@ -327,24 +279,24 @@ public class Main extends Application {
         );
 
         // To handle when mouse hovers over the main pomodoro button
-        mainToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
+        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Creating a new ImageView to hold the selected version of the main pomodoro button
                         ImageView selectedMainPomHover = new ImageView(selectedMainPom);
-                        mainToggle.setGraphic(selectedMainPomHover);
+                        pomodoroToggle.setGraphic(selectedMainPomHover);
                     }
                 }
         );
 
         // To handle when mouse leaves main pomodoro button hover zone
-        mainToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Set the main Pomodoro ImageView back to the toggle ImageView
-                        mainToggle.setGraphic(mainImageView);
+                        pomodoroToggle.setGraphic(mainImageView);
                     }
                 }
         );
@@ -428,7 +380,7 @@ public class Main extends Application {
         // Adding toggle buttons to the toggleGroup
         customTimerToggleButton.setToggleGroup(toggleGroup);
         whatIsToggle.setToggleGroup(toggleGroup);
-        mainToggle.setToggleGroup(toggleGroup);
+        pomodoroToggle.setToggleGroup(toggleGroup);
         shortBreakToggle.setToggleGroup(toggleGroup);
         longBreakToggle.setToggleGroup(toggleGroup);
         loopToggle.setToggleGroup(toggleGroup);
@@ -497,7 +449,7 @@ public class Main extends Application {
             }
         };
         // Adding event filter for long break button click
-        mainToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeMainToggle);
+        pomodoroToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeMainToggle);
 
 
 
@@ -509,7 +461,7 @@ public class Main extends Application {
                 tomato1.setImage(shortBreakImage1);
                 tomato2.setImage(shortBreakImage2);
 
-                mainToggle.setGraphic(mainImageView);
+                pomodoroToggle.setGraphic(mainImageView);
             }
         };
         // Adding event filter for long break button click
@@ -570,117 +522,29 @@ public class Main extends Application {
 // Module end
 
         // Adding nodes to pane          column    row
-        gridPane.add(titleView,        0, 0);
-        gridPane.add(customTimerToggleButton,1, 0);
-        gridPane.add(whatIsToggle,     2, 0);
+        root.add(titleView,        0, 0);
+        root.add(customTimerToggleButton,1, 0);
+        root.add(whatIsToggle,     2, 0);
 
-        gridPane.add(mainToggle,   0, 1);
-        //gridPane.add(shortBreakButton, 1, 1);
-        //gridPane.add(longBreakButton,  2, 1);
-        //gridPane.add(loopButton,      3, 1);
-        //gridPane.add(iView, 0, 2);
-        gridPane.add(tomato,            0,2);
-        gridPane.add(loopToggle,        3,1);
-        gridPane.add(longBreakToggle,   2,1);
-        gridPane.add(shortBreakToggle, 1,1);
-        //gridPane.add(shortBreakToggle, 0, 3);
-        //gridPane.add(mainToggle, 0, 3);
-        //gridPane.add(customTimerToggleButton, 0, 3);
-        gridPane.add(timerLabel, 0, 3);
+        root.add(pomodoroToggle,   0, 1);
 
 
-        gridPane.add(bindingExample, 3, 0);
+
+        //root.add(iView, 0, 2);
+        root.add(tomato,            0,2);
+        root.add(loopToggle,        3,1);
+        root.add(longBreakToggle,   2,1);
+        root.add(shortBreakToggle, 1,1);
+        //root.add(shortBreakToggle, 0, 3);
+        //root.add(pomodoroToggle, 0, 3);
+        //root.add(customTimerToggleButton, 0, 3);
+        root.add(timerLabel, 0, 3);
+
 
         // Setting spacing between nodes on gridpane
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        root.setHgap(10);
+        root.setVgap(10);
 
-
-/*
-        // Event handler for binding example button
-        EventHandler<MouseEvent> bindingHandler = new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-                try {
-
-                    // variable declarations
-
-                    // Constant start time
-                    final int STARTTIME = 15;
-                    Timeline timeline = new Timeline();
-                    Label timerLabel = new Label();
-                    int timeSeconds = STARTTIME;
-
-                    // Setting up the stage and the scene
-                    Stage myStage = new Stage();
-                    myStage.setTitle("FX timer");
-                    Group root = new Group();
-                    Scene scene = new Scene(root, 300, 250);
-
-                    // label
-                    timerLabel.setText(Integer.toString(timeSeconds));
-                    timerLabel.setTextFill(Color.RED);
-                    timerLabel.setStyle("-fx-font-size: 4em;");
-
-                    // button
-                    Button button = new Button();
-                    button.setText("Start Timer");
-
-
-                    button.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            if (timeline != null) {
-                                timeline.stop();
-                            }
-
-                            // update timer label
-                            //timerLabel.setText(Integer.toString(timeSeconds));
-                            timeline.setCycleCount(Timeline.INDEFINITE);
-
-                            KeyFrame keyFrame = new KeyFrame(
-                                    Duration.seconds(1),
-                                    new EventHandler() {
-                                        public void handle(Event event) {
-                                            if (timeSeconds <= 0) {
-                                                timeline.stop();
-                                            }
-                                        }
-                                    }
-                            );
-
-                            timeline.getKeyFrames().add(keyFrame);
-                            timeline.playFromStart();
-                        }
-                    });
-
-                    // Create and configure VBox
-                    // gap between components is 20
-                    VBox vb = new VBox(20);
-                    // center the components within VBox
-                    vb.setAlignment(Pos.CENTER);
-                    // Make it as wide as the application frame (scene)
-                    vb.setPrefWidth(scene.getWidth());
-                    // Move the VBox down a bit
-                    vb.setLayoutY(30);
-                    // Add the button and timerLabel to the VBox
-                    vb.getChildren().addAll(button, timerLabel);
-                    // Add the VBox to the root component
-                    root.getChildren().add(vb);
-
-                    myStage.setScene(scene);
-                    myStage.show();
-
-
-
-                } finally {
-
-                }
-            }
-        };
-        bindingExample.addEventFilter(MouseEvent.MOUSE_CLICKED, bindingHandler);*/
 
 
         // Creating the event handler to open a new information window when what is button is clicked
@@ -748,9 +612,9 @@ public class Main extends Application {
                     title3.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
 
                     // Setting color of title text objects
-                    title1.setFill(titleTextColor);
-                    title2.setFill(titleTextColor);
-                    title3.setFill(titleTextColor);
+                    title1.setFill(darkRedColor);
+                    title2.setFill(darkRedColor);
+                    title3.setFill(darkRedColor);
 
                     // Setting font stylings for paragraphs objects
                     para1.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
@@ -758,9 +622,9 @@ public class Main extends Application {
                     para3.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
 
                     // Setting color of paragraph text
-                    para1.setFill(backgroundColor);
-                    para2.setFill(backgroundColor);
-                    para3.setFill(backgroundColor);
+                    para1.setFill(lightRedColor);
+                    para2.setFill(lightRedColor);
+                    para3.setFill(lightRedColor);
 
 
 
@@ -771,7 +635,7 @@ public class Main extends Application {
                     Pane whatIsPane = new Pane(title1, title2, title3, para1, para2, para3);
 
                     // Creating a new background fill
-                    BackgroundFill whatIsBackGroundFill = new BackgroundFill(buttonBackground, CornerRadii.EMPTY, Insets.EMPTY);
+                    BackgroundFill whatIsBackGroundFill = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
 
                     // Creating a new background
                     Background whatIsBackGround = new Background(whatIsBackGroundFill);
@@ -811,9 +675,9 @@ public class Main extends Application {
                     lngBreakLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
 
                     // Setting color of labels
-                    lengthLabel.setFill(backgroundColor);
-                    shrtBreakLabel.setFill(backgroundColor);
-                    lngBreakLabel.setFill(backgroundColor);
+                    lengthLabel.setFill(lightRedColor);
+                    shrtBreakLabel.setFill(lightRedColor);
+                    lngBreakLabel.setFill(lightRedColor);
 
                     // Setting the width and heights of the TextFields
                     pomTxtFld.setPrefWidth(450);
@@ -825,7 +689,7 @@ public class Main extends Application {
                     GridPane customTimerPane = new GridPane();
 
                     // Creating a new background fill
-                    BackgroundFill cstm = new BackgroundFill(buttonBackground, CornerRadii.EMPTY, Insets.EMPTY);
+                    BackgroundFill cstm = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
 
                     // Creating a new background
                     Background customTimeBkgnd = new Background(cstm);
@@ -863,7 +727,7 @@ public class Main extends Application {
         // Adding event filter for custom timer button click
         customTimerToggleButton.addEventFilter(MouseEvent.MOUSE_CLICKED, customTimerHandler);
 
-        primaryStage.setScene(new Scene(gridPane, 1500, 700));
+        primaryStage.setScene(new Scene(root, 1500, 700));
 
         primaryStage.show();
         //sfsdf
