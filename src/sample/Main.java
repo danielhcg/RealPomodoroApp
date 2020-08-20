@@ -54,204 +54,198 @@ public class Main extends Application {
         Insets inset1 = new Insets(0.0);
 
         // Images to be used throughout the app
-        FileInputStream iStream8 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\titleImage.png");
-        Image titleImage = new Image(iStream8);       // Title image
-        FileInputStream iStream1 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage1.png");
-        Image studyImage1 = new Image(iStream1);      // Main tomato image 1
-        FileInputStream iStream6 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage2.png");
-        Image studyImage2 = new Image(iStream6);      // Main tomato image 2
-        FileInputStream iStream3 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage1.png");
+        FileInputStream iStream1 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\titleImage.png");
+        Image titleImage = new Image(iStream1);       // Title image
+
+
+        FileInputStream iStream2 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage1.png");
+        Image studyImage1 = new Image(iStream2);      // Main tomato image 1
+        FileInputStream iStream3 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage1.png");
         Image shortBreakImage1 = new Image(iStream3); // Short break tomato image 1
-        FileInputStream iStream5 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage2.png");
-        Image shortBreakImage2 = new Image(iStream5); // Short break tomato image 2
-        FileInputStream iStream4 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage.png");
+        FileInputStream iStream4 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage.png");
         Image longBreakImage = new Image(iStream4);   // Long break tomato image 1
-        FileInputStream iStream7 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage2.png");
+
+
+        FileInputStream iStream5 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\studyImage2.png");
+        Image studyImage2 = new Image(iStream5);      // Main tomato image 2
+        FileInputStream iStream6 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\shortBreakImage2.png");
+        Image shortBreakImage2 = new Image(iStream6); // Short break tomato image 2
+        FileInputStream iStream7 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\longBreakImage2.png");
         Image longBreakImage2 = new Image(iStream7);  // Long break tomato image 2
-        FileInputStream iStream9 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLoop.png");
-        Image selectedLoop = new Image(iStream9);     // Selected loop button image
-        FileInputStream iStream10 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLoop.png");
-        Image unselectedLoop = new Image(iStream10);  // Unselected loop button image
-        FileInputStream iStream11 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLongBreak.png");
-        Image selectedLongBreak = new Image(iStream11); // Selected long break button image
-        FileInputStream iStream12 = new FileInputStream("C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLongBreak.png");
-        Image unselectedLongBreak = new Image(iStream12); // Unselected long break button image
+
+
+        FileInputStream iStream8 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedMainPom.png");
+        Image selectedMainPom = new Image(iStream8);    // Selected main pomodoro image
+        FileInputStream iStream9 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedShortBreak.png");
+        Image selectedShortBreak = new Image(iStream9); // Selected short break button image
+        FileInputStream iStream10 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLongBreak.png");
+        Image selectedLongBreak = new Image(iStream10);  // Selected long break button image
+        FileInputStream iStream11 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedLoop.png");
+        Image selectedLoop = new Image(iStream11);        // Selected loop button image
+        FileInputStream iStream12 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedCustom.png");
+        Image selectedCustom = new Image(iStream12);     // Selected custom button image
+        FileInputStream iStream13 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedWhatIs.png");
+        Image selectedWhatIs = new Image(iStream13);     // Selected what is button image
+
+
+        FileInputStream iStream14 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedMainPom.png");
+        Image unselectedMainPom = new Image(iStream14);    // Unselected main pomodoro image
+        FileInputStream iStream15 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedShortBreak.png");
+        Image unselectedShortBreak = new Image(iStream15); // Unselected short break button image
+        FileInputStream iStream16 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLongBreak.png");
+        Image unselectedLongBreak = new Image(iStream16);  // Unselected long break button image
+        FileInputStream iStream17 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedLoop.png");
+        Image unselectedLoop = new Image(iStream17);       // Unselected loop button image
+        FileInputStream iStream18 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedCustom.png");
+        Image unselectedCustom = new Image(iStream18);     // Unselected custom button image
+        FileInputStream iStream19 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedWhatIs.png");
+        Image unselectedWhatIs = new Image(iStream19);     // Unselected what is button image
+
 
 
         /**----------------------------------------------Nodes-----------------------------------------------------*/
-        ImageView titleView = new ImageView(titleImage);
+        ImageView titleView = new ImageView(titleImage); // To hold title image
 
-
-        primaryStage.setTitle("Pomodoro Timer");
-        // Creating a grid pane
-        GridPane root = new GridPane();
-        // Creating a dark red background to set to the main stage
-        Background darkRedBackground = new Background(new BackgroundFill(lightRedColor, CornerRadii.EMPTY, Insets.EMPTY));
-        // Set the color of the background
-        root.setBackground(darkRedBackground);
-
+        ToggleButton pomodoroToggle = new ToggleButton();
+        ToggleButton shortToggle    = new ToggleButton();
+        ToggleButton longToggle     = new ToggleButton();
+        ToggleButton loopToggle     = new ToggleButton();
+        ToggleButton whatIsToggle   = new ToggleButton();
+        ToggleButton customToggle   = new ToggleButton();
 
 
 
 
-        // Creating a custom toggle button for the loop button-----------------------------------------
-
-        // Bringing in the photos for the toggling effect into the code
-
-        ToggleButton pomodoroToggle = new ToggleButton();   // Creating a new toggle button for main Pomodoro button
-        ToggleButton shortBreakToggle = new ToggleButton();   // Creating a new toggle button for short break
-        ToggleButton longBreakToggle = new ToggleButton();    // Creating a new toggle button
-        ToggleButton loopToggle = new ToggleButton(); // Creating a new toggle button
-        ToggleButton whatIsToggle = new ToggleButton();  // Creating a new toggle button for the what is button
-        ToggleButton customTimerToggleButton = new ToggleButton();
+        // Image views to store the images of buttons for toggling effect (Selected/Unselected)
+        ImageView mainToggleIV   = new ImageView();
+        ImageView shortToggleIV  = new ImageView();
+        ImageView longToggleIV   = new ImageView();
+        ImageView loopToggleIV   = new ImageView();
+        ImageView whatIsToggleIV = new ImageView();
+        ImageView customToggleIV = new ImageView();
 
 
+        // Setting toggle effect image views to respective toggle button nodes
+        pomodoroToggle. setGraphic(mainToggleIV);
+        shortToggle.    setGraphic(shortToggleIV);
+        longToggle.     setGraphic(longToggleIV);
+        loopToggle.     setGraphic(loopToggleIV);
+        whatIsToggle.   setGraphic(whatIsToggleIV);
+        customToggle.   setGraphic(customToggleIV);
 
 
-
-
-        ImageView loopToggleIV = new ImageView();     // Creating an ImageView to add to the Grid Pane
-        loopToggle.setGraphic(loopToggleIV);          // Setting graphic of toggle to the Image View
+        // Setting the padding for each toggle button bc there's a border that forms when I display the images
+        pomodoroToggle.setPadding(inset1);
+        shortToggle.setPadding(inset1);
+        longToggle.setPadding(inset1);
         loopToggle.setPadding(inset1);
+        whatIsToggle.setPadding(inset1);
+        customToggle.setPadding(inset1);
 
+
+        // Binding selection images to respective toggle image views for each button
+        mainToggleIV.imageProperty().bind(Bindings
+                .when(pomodoroToggle.selectedProperty())
+                .then(selectedMainPom)
+                .otherwise(unselectedMainPom)
+        );
+        shortToggleIV.imageProperty().bind(Bindings
+                .when(shortToggle.selectedProperty())
+                .then(selectedShortBreak)
+                .otherwise(unselectedShortBreak)
+        );
+        longToggleIV.imageProperty().bind(Bindings
+                .when(longToggle.selectedProperty())
+                .then(selectedLongBreak)
+                .otherwise(unselectedLongBreak)
+        );
         loopToggleIV.imageProperty().bind(Bindings
                 .when(loopToggle.selectedProperty())
                 .then(selectedLoop)
                 .otherwise(unselectedLoop)
         );
-
-
-
-        // Now alls thats left to do is add the toggle button to the grid pane
-
-        // Last line of module------------------------------------------------------------------------
-
-        // Creating a custom toggle button for the long break button----------------------------------
-
-        // Brining in the photos fro the toggling effect into the code
-
-
-        ImageView longBreakToggleImageView = new ImageView(); // Creating an ImageView to add to the Grid Pane
-        longBreakToggle.setGraphic(longBreakToggleImageView);
-        longBreakToggle.setPadding(inset1);
-
-        longBreakToggleImageView.imageProperty().bind(Bindings
-                .when(longBreakToggle.selectedProperty())
-                .then(selectedLongBreak)
-                .otherwise(unselectedLongBreak)
-        );
-
-        // Now add the long break toggle button to the grid pane
-
-        // Last line of module------------------------------------------------------------------------
-
-        // Creating a custom toggle button for the short break button --------------------------------
-
-        // Bringing in the photos for the toggling effect into the code
-        FileInputStream iStream13 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedShortBreak.png");
-        Image selectedShortBreak = new Image(iStream13);
-
-        FileInputStream iStream14 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedShortBreak.png");
-        Image unselectedShortBreak = new Image(iStream14);
-
-        ImageView shortBreakImageView = new ImageView();      // Creating a new Image View for the short break
-        shortBreakToggle.setGraphic(shortBreakImageView);     // Setting button graphic to toggle Image View
-        shortBreakToggle.setPadding(inset1);
-
-        shortBreakImageView.imageProperty().bind(Bindings
-            .when(shortBreakToggle.selectedProperty())
-                .then(selectedShortBreak)
-                .otherwise(unselectedShortBreak)
-        );
-        // Last line of module------------------------------------------------------------------------
-
-
-        // Creating a custom toggle button for the main Pomodoro button-------------------------------
-        // Bringing in the photos for the toggling effect into the code
-        FileInputStream iStream15 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedMainPom.png");
-        Image selectedMainPom = new Image(iStream15);
-
-        FileInputStream iStream16 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedMainPom.png");
-        Image unselectedMainPom = new Image(iStream16);
-
-        ImageView mainImageView = new ImageView();      // Creating a new Image View for main Pomodoro button
-        pomodoroToggle.setGraphic(mainImageView);           // Setting button graphic to toggle Image View
-        pomodoroToggle.setPadding(inset1);
-
-        mainImageView.imageProperty().bind(Bindings
-            .when(pomodoroToggle.selectedProperty())
-                .then(selectedMainPom)
-                .otherwise(unselectedMainPom)
-        );
-
-
-
-
-        // Last line of module------------------------------------------------------------------------
-
-        // Creating a custom toggle button for the what is button-------------------------------------
-        // Bringing in the photos for the toggling effect into the code
-        FileInputStream iStream17 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedWhatIs.png");
-        Image selectedWhatIs = new Image(iStream17);
-
-        FileInputStream iStream18 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedWhatIs.png");
-        Image unselectedWhatIs = new Image(iStream18);
-
-        ImageView whatIsImageView= new ImageView();      // Creating a new Image View for what is button
-        whatIsToggle.setGraphic(whatIsImageView);
-        whatIsToggle.setPadding(inset1);
-
-        whatIsImageView.imageProperty().bind(Bindings
-            .when(whatIsToggle.selectedProperty())
+        whatIsToggleIV.imageProperty().bind(Bindings
+                .when(whatIsToggle.selectedProperty())
                 .then(selectedWhatIs)
                 .otherwise(unselectedWhatIs)
         );
-        // End of module------------------------------------------------------------------------------
-
-        // Creating a custom toggle button for the custom timer button--------------------------------
-        // Bringing in the photos for the toggling effect into the code
-        FileInputStream iStream19 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedCustom.png");
-        Image unselectedCustom = new Image(iStream19);
-
-        FileInputStream iStream20 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\selectedCustom.png");
-        Image selectedCustom = new Image(iStream20);
-
-        ImageView customTimerImageView = new ImageView();
-        customTimerToggleButton.setGraphic(customTimerImageView);
-        customTimerToggleButton.setPadding(inset1);
-
-        customTimerImageView.imageProperty().bind(Bindings
-            .when(customTimerToggleButton.selectedProperty())
+        customToggleIV.imageProperty().bind(Bindings
+                .when(customToggle.selectedProperty())
                 .then(selectedCustom)
                 .otherwise(unselectedCustom)
         );
 
+
+        // Event handlers for toggle button mouse hover over 'selected/unselected' effect on each button
+        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_MOVED,           // Selected main pomodoro button
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent mouseEvent) {
+                        ImageView selectedMainPomHover = new ImageView(selectedMainPom);
+                        pomodoroToggle.setGraphic(selectedMainPomHover); }
+        });
+        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,  // Unselected main pomodoro button
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent mouseEvent) {
+                        pomodoroToggle.setGraphic(mainToggleIV); }
+        });
+        shortToggle.addEventHandler(MouseEvent.MOUSE_MOVED,             // Selected short break button
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent mouseEvent) {
+                        ImageView selectedShortBreakHover = new ImageView(selectedShortBreak);
+                        shortToggle.setGraphic(selectedShortBreakHover); }
+        });
+
+
+
+
+
+        primaryStage.setTitle("Pomodoro Timer"); // Set title of program
+        GridPane root = new GridPane();          // Creating a grid pane
+        // Creating a dark red background to set to the main stage
+        Background darkRedBackground = new Background(new BackgroundFill(lightRedColor, CornerRadii.EMPTY, Insets.EMPTY));
+        root.setBackground(darkRedBackground);   // Set the color of the background
+        //----------------------------------------------------------------------------------------------------------------------
+
+
+
+
         // To handle mouse hover over custom timer button
-        customTimerToggleButton.addEventHandler(MouseEvent.MOUSE_MOVED,
+        customToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Creating a new image view to hold the selected version of the custom button
                         ImageView selectedCustomHover = new ImageView(selectedCustom);
-                        customTimerToggleButton.setGraphic(selectedCustomHover);
+                        customToggle.setGraphic(selectedCustomHover);
                     }
         });
 
         // To handle when mouse leaves custom timer button hover zone
-        customTimerToggleButton.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+        customToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Set custom timer ImageView back to the toggle image view
-                        customTimerToggleButton.setGraphic(customTimerImageView);
+                        customToggle.setGraphic(customToggleIV);
                     }
         });
 
@@ -273,78 +267,49 @@ public class Main extends Application {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Set the what is ImageView back to the toggle ImageView
-                        whatIsToggle.setGraphic(whatIsImageView);
-                    }
-                }
-        );
-
-        // To handle when mouse hovers over the main pomodoro button
-        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Creating a new ImageView to hold the selected version of the main pomodoro button
-                        ImageView selectedMainPomHover = new ImageView(selectedMainPom);
-                        pomodoroToggle.setGraphic(selectedMainPomHover);
-                    }
-                }
-        );
-
-        // To handle when mouse leaves main pomodoro button hover zone
-        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Set the main Pomodoro ImageView back to the toggle ImageView
-                        pomodoroToggle.setGraphic(mainImageView);
+                        whatIsToggle.setGraphic(whatIsToggleIV);
                     }
                 }
         );
 
 
-        // To handle when mouse hovers over the short break button
-        shortBreakToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Creating a new ImageView to hold the selected version of the short break button
-                        ImageView selectedShortBreakHover = new ImageView(selectedShortBreak);
-                        shortBreakToggle.setGraphic(selectedShortBreakHover);
-                    }
-                }
-        );
+
+
+
+
+
 
         // To handle when mouse leaves main short break button hover zone
-        shortBreakToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+        shortToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Set the short break ImageView back to the toggle ImageView
-                        shortBreakToggle.setGraphic(shortBreakImageView);
+                        shortToggle.setGraphic(shortToggleIV);
                     }
                 }
         );
 
 
         // To handle when mouse hovers over the long break button
-        longBreakToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
+        longToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Creating a new ImageView to hold the selected version of the long break button
                         ImageView selectedLongBreakHover = new ImageView(selectedLongBreak);
-                        longBreakToggle.setGraphic(selectedLongBreakHover);
+                        longToggle.setGraphic(selectedLongBreakHover);
                     }
                 }
         );
 
         // To handle when mouse leaves long break button hover zone
-        longBreakToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
+        longToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         // Set the long break ImageView back to the toggle ImageView
-                        longBreakToggle.setGraphic(longBreakToggleImageView);
+                        longToggle.setGraphic(longToggleIV);
                     }
                 }
         );
@@ -378,11 +343,11 @@ public class Main extends Application {
         // Creating a new toggle group
         ToggleGroup toggleGroup = new ToggleGroup();
         // Adding toggle buttons to the toggleGroup
-        customTimerToggleButton.setToggleGroup(toggleGroup);
+        customToggle.setToggleGroup(toggleGroup);
         whatIsToggle.setToggleGroup(toggleGroup);
         pomodoroToggle.setToggleGroup(toggleGroup);
-        shortBreakToggle.setToggleGroup(toggleGroup);
-        longBreakToggle.setToggleGroup(toggleGroup);
+        shortToggle.setToggleGroup(toggleGroup);
+        longToggle.setToggleGroup(toggleGroup);
         loopToggle.setToggleGroup(toggleGroup);
 
 
@@ -461,11 +426,11 @@ public class Main extends Application {
                 tomato1.setImage(shortBreakImage1);
                 tomato2.setImage(shortBreakImage2);
 
-                pomodoroToggle.setGraphic(mainImageView);
+                pomodoroToggle.setGraphic(mainToggleIV);
             }
         };
         // Adding event filter for long break button click
-        shortBreakToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeShortBreakImageToggle);
+        shortToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeShortBreakImageToggle);
 
 
 
@@ -479,7 +444,7 @@ public class Main extends Application {
             }
         };
         // Adding event filter for long break button click
-        longBreakToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImageToggle);
+        longToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImageToggle);
 
 
 
@@ -501,10 +466,10 @@ public class Main extends Application {
         timerLabel.setTextFill(Color.WHITE); // changing color of timer numbers
         timerLabel.setStyle("-fx-font-size: 4em;");
 
-        // using the Long break toggle button 'longBreakToggle'
+        // using the Long break toggle button 'longToggle'
 
-        // Event handler for timer of 'longBreakToggle'
-        longBreakToggle.setOnAction(new EventHandler<ActionEvent>() {
+        // Event handler for timer of 'longToggle'
+        longToggle.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (timeline != null) {
@@ -523,7 +488,7 @@ public class Main extends Application {
 
         // Adding nodes to pane          column    row
         root.add(titleView,        0, 0);
-        root.add(customTimerToggleButton,1, 0);
+        root.add(customToggle,1, 0);
         root.add(whatIsToggle,     2, 0);
 
         root.add(pomodoroToggle,   0, 1);
@@ -533,11 +498,11 @@ public class Main extends Application {
         //root.add(iView, 0, 2);
         root.add(tomato,            0,2);
         root.add(loopToggle,        3,1);
-        root.add(longBreakToggle,   2,1);
-        root.add(shortBreakToggle, 1,1);
-        //root.add(shortBreakToggle, 0, 3);
+        root.add(longToggle,   2,1);
+        root.add(shortToggle, 1,1);
+        //root.add(shortToggle, 0, 3);
         //root.add(pomodoroToggle, 0, 3);
-        //root.add(customTimerToggleButton, 0, 3);
+        //root.add(customToggle, 0, 3);
         root.add(timerLabel, 0, 3);
 
 
@@ -725,7 +690,7 @@ public class Main extends Application {
             }
         };
         // Adding event filter for custom timer button click
-        customTimerToggleButton.addEventFilter(MouseEvent.MOUSE_CLICKED, customTimerHandler);
+        customToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, customTimerHandler);
 
         primaryStage.setScene(new Scene(root, 1500, 700));
 
