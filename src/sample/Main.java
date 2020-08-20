@@ -132,6 +132,16 @@ public class Main extends Application {
         ToggleButton whatIsToggle   = new ToggleButton();
         ToggleButton customToggle   = new ToggleButton();
 
+        // Grouping toggle buttons together
+        ToggleGroup toggleGroup = new ToggleGroup();
+
+        customToggle.   setToggleGroup(toggleGroup);
+        whatIsToggle.   setToggleGroup(toggleGroup);
+        pomodoroToggle. setToggleGroup(toggleGroup);
+        shortToggle.    setToggleGroup(toggleGroup);
+        longToggle.     setToggleGroup(toggleGroup);
+        loopToggle.     setToggleGroup(toggleGroup);
+
 
 
 
@@ -195,26 +205,98 @@ public class Main extends Application {
         );
 
 
-        // Event handlers for toggle button mouse hover over 'selected/unselected' effect on each button
+        // Changing button image when user hovers over a specific button
+
+        ImageView selectedMainPomHover =    new ImageView(selectedMainPom);      // ImageView's for when
+        ImageView selectedShortBreakHover = new ImageView(selectedShortBreak);   // a button is hovered
+        ImageView selectedLongBreakHover =  new ImageView(selectedLongBreak);    // over
+        ImageView selectedLoopHover =       new ImageView(selectedLoop);
+        ImageView selectedWhatIsHover =     new ImageView(selectedWhatIs);
+        ImageView selectedCustomHover =     new ImageView(selectedCustom);
+
         pomodoroToggle.addEventHandler(MouseEvent.MOUSE_MOVED,           // Selected main pomodoro button
-                new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent mouseEvent) {
-                        ImageView selectedMainPomHover = new ImageView(selectedMainPom);
-                        pomodoroToggle.setGraphic(selectedMainPomHover); }
-        });
-        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,  // Unselected main pomodoro button
-                new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent mouseEvent) {
-                        pomodoroToggle.setGraphic(mainToggleIV); }
-        });
+                mouseEvent -> { pomodoroToggle.setGraphic(selectedMainPomHover); }
+        );
         shortToggle.addEventHandler(MouseEvent.MOUSE_MOVED,             // Selected short break button
-                new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent mouseEvent) {
-                        ImageView selectedShortBreakHover = new ImageView(selectedShortBreak);
-                        shortToggle.setGraphic(selectedShortBreakHover); }
-        });
+                mouseEvent -> { shortToggle.setGraphic(selectedShortBreakHover); }
+        );
+        longToggle.addEventHandler(MouseEvent.MOUSE_MOVED,              // Selected long break button
+                mouseEvent -> { longToggle.setGraphic(selectedLongBreakHover); }
+        );
+        loopToggle.addEventHandler(MouseEvent.MOUSE_MOVED,              // Selected loop button
+                mouseEvent -> { loopToggle.setGraphic(selectedLoopHover); }
+        );
+        whatIsToggle.addEventHandler(MouseEvent.MOUSE_MOVED,            // Selected what is button
+                mouseEvent -> { whatIsToggle.setGraphic(selectedWhatIsHover); }
+        );
+        customToggle.addEventHandler(MouseEvent.MOUSE_MOVED,            // Selected custom button
+                mouseEvent -> { customToggle.setGraphic(selectedCustomHover); }
+        );
+
+        pomodoroToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,  // Unselected main pomodoro button
+                mouseEvent -> pomodoroToggle.setGraphic(mainToggleIV)
+        );
+        shortToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,     // Unselected short break button
+                mouseEvent -> shortToggle.setGraphic(shortToggleIV)
+        );
+        longToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,      // Unselected long break button
+                mouseEvent -> longToggle.setGraphic(longToggleIV)
+        );
+        loopToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,      // Unselected loop button
+                mouseEvent -> loopToggle.setGraphic(loopToggleIV)
+        );
+        whatIsToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,    // Unselected what is button
+                mouseEvent -> whatIsToggle.setGraphic(whatIsToggleIV)
+        );
+        customToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,    // Unselected custom button
+                mouseEvent -> customToggle.setGraphic(customToggleIV)
+        );
 
 
+        // Creating the animation for the main tomato image at the center of the screen
+        ImageView tomato1 = new ImageView(studyImage1);
+        ImageView tomato2 = new ImageView(studyImage2);
+
+        Group tomato = new Group(tomato1);
+
+        tomato1.setFitHeight(250);                                 // Set the size of the ImageView's
+        tomato1.setFitWidth(250);
+        tomato2.setFitHeight(250);
+        tomato2.setFitWidth(250);
+
+        Timeline main_tomato_image_timeline = new Timeline();      // New timeline set to cycle indefinitely
+        main_tomato_image_timeline.setCycleCount(Timeline.INDEFINITE);
+
+        main_tomato_image_timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1.0),
+                (ActionEvent event) -> {                           // KeyFrame to switch image @ 1st second
+                    tomato.getChildren().setAll(tomato2); }
+        ));
+        main_tomato_image_timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(2.0),
+                (ActionEvent event) -> {                           // KeyFrame to switch image @ 2nd second
+                    tomato.getChildren().setAll(tomato1); }
+        ));
+        main_tomato_image_timeline.play();                         // Timeline execute command
+
+
+        // Creating event handlers to change the animation image when certain buttons are clicked
+        EventHandler<MouseEvent> changeMainToggle = mouseEvent -> {
+            tomato1.setImage(studyImage1);
+            tomato2.setImage(studyImage2);
+        };  // When the main Pomodoro button is clicked
+        pomodoroToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeMainToggle);
+
+        EventHandler<MouseEvent> changeShortBreakImageToggle = mouseEvent -> {
+            tomato1.setImage(shortBreakImage1);
+            tomato2.setImage(shortBreakImage2);
+            pomodoroToggle.setGraphic(mainToggleIV);
+        };  // When short break button is clicked
+        shortToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeShortBreakImageToggle);
+
+        EventHandler<MouseEvent> changeLongBreakImageToggle = mouseEvent -> {
+            tomato1.setImage(longBreakImage);
+            tomato2.setImage(longBreakImage2);
+        };  // When long break button is clicked
+        longToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImageToggle);
 
 
 
@@ -226,225 +308,6 @@ public class Main extends Application {
         //----------------------------------------------------------------------------------------------------------------------
 
 
-
-
-        // To handle mouse hover over custom timer button
-        customToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Creating a new image view to hold the selected version of the custom button
-                        ImageView selectedCustomHover = new ImageView(selectedCustom);
-                        customToggle.setGraphic(selectedCustomHover);
-                    }
-        });
-
-        // To handle when mouse leaves custom timer button hover zone
-        customToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Set custom timer ImageView back to the toggle image view
-                        customToggle.setGraphic(customToggleIV);
-                    }
-        });
-
-        // To handle when mouse hovers over the what is button
-        whatIsToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Creating a new ImageView to hold the selected version of the what is button
-                        ImageView selectedWhatIsHover = new ImageView(selectedWhatIs);
-                        whatIsToggle.setGraphic(selectedWhatIsHover);
-                    }
-                }
-        );
-
-        // To handle when mouse leaves what is button hover zone
-        whatIsToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Set the what is ImageView back to the toggle ImageView
-                        whatIsToggle.setGraphic(whatIsToggleIV);
-                    }
-                }
-        );
-
-
-
-
-
-
-
-
-        // To handle when mouse leaves main short break button hover zone
-        shortToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Set the short break ImageView back to the toggle ImageView
-                        shortToggle.setGraphic(shortToggleIV);
-                    }
-                }
-        );
-
-
-        // To handle when mouse hovers over the long break button
-        longToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Creating a new ImageView to hold the selected version of the long break button
-                        ImageView selectedLongBreakHover = new ImageView(selectedLongBreak);
-                        longToggle.setGraphic(selectedLongBreakHover);
-                    }
-                }
-        );
-
-        // To handle when mouse leaves long break button hover zone
-        longToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Set the long break ImageView back to the toggle ImageView
-                        longToggle.setGraphic(longToggleIV);
-                    }
-                }
-        );
-
-        // To handle when mouse hovers over the long break button
-        loopToggle.addEventHandler(MouseEvent.MOUSE_MOVED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Creating a new ImageView to hold the selected version of the long break button
-                        ImageView selectedLoopHover = new ImageView(selectedLoop);
-                        loopToggle.setGraphic(selectedLoopHover);
-                    }
-                }
-        );
-
-        // To handle when mouse leaves long break button hover zone
-        loopToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        // Set the long break ImageView back to the toggle ImageView
-                        loopToggle.setGraphic(loopToggleIV);
-                    }
-                }
-        );
-
-
-        // End of module------------------------------------------------------------------------------
-
-        // Creating a new toggle group
-        ToggleGroup toggleGroup = new ToggleGroup();
-        // Adding toggle buttons to the toggleGroup
-        customToggle.setToggleGroup(toggleGroup);
-        whatIsToggle.setToggleGroup(toggleGroup);
-        pomodoroToggle.setToggleGroup(toggleGroup);
-        shortToggle.setToggleGroup(toggleGroup);
-        longToggle.setToggleGroup(toggleGroup);
-        loopToggle.setToggleGroup(toggleGroup);
-
-
-
-
-        // Passing the image to a constructor
-        ImageView iView = new ImageView(studyImage1);
-        // setting the fit height and width of the image view
-        iView.setFitHeight(250);
-        iView.setFitWidth(250);
-
-        // Creating a group node
-        Group tomato;
-
-        // Place short break images into ImageView Nodes
-        ImageView tomato1 = new ImageView(studyImage1);
-        ImageView tomato2 = new ImageView(studyImage2);
-
-        // Set the size of the images
-        tomato1.setFitHeight(250);
-        tomato1.setFitWidth(250);
-
-        tomato2.setFitHeight(250);
-        tomato2.setFitWidth(250);
-
-        // instantiate an object called shortBreak
-        tomato = new Group(tomato1);
-
-        // Place tomato in specific coordinates
-        tomato.setTranslateX(50);
-        tomato.setTranslateY(2);
-
-
-        // Animate shortbreak images in a loop
-        Timeline t = new Timeline();
-        t.setCycleCount(Timeline.INDEFINITE);
-
-        // Add images into the timeline
-        t.getKeyFrames().add(new KeyFrame(
-                Duration.seconds(1.0),
-                (ActionEvent event) -> {
-                    tomato.getChildren().setAll(tomato2);
-                }
-        ));
-        t.getKeyFrames().add(new KeyFrame(
-                Duration.seconds(2.0),
-                (ActionEvent event) -> {
-                    tomato.getChildren().setAll(tomato1);
-                }
-        ));
-
-        t.play();
-
-
-        /**Setting images on button clicks for display image area*/
-
-        // Event handler for main pomodoro button click
-        EventHandler<MouseEvent> changeMainToggle = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // Change current image to main Pomodoro image
-                tomato1.setImage(studyImage1);
-                tomato2.setImage(studyImage2);
-            }
-        };
-        // Adding event filter for long break button click
-        pomodoroToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeMainToggle);
-
-
-
-        // Event handler for short break toggle button
-        EventHandler<MouseEvent> changeShortBreakImageToggle = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // Change current image to long break image
-                tomato1.setImage(shortBreakImage1);
-                tomato2.setImage(shortBreakImage2);
-
-                pomodoroToggle.setGraphic(mainToggleIV);
-            }
-        };
-        // Adding event filter for long break button click
-        shortToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeShortBreakImageToggle);
-
-
-
-        // Event handler for long break toggle button
-        EventHandler<MouseEvent> changeLongBreakImageToggle = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // Change current image to long break image
-                tomato1.setImage(longBreakImage);
-                tomato2.setImage(longBreakImage2);
-            }
-        };
-        // Adding event filter for long break button click
-        longToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImageToggle);
 
 
 
