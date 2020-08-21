@@ -1,6 +1,10 @@
 package sample;
 
+import com.sun.glass.ui.CommonDialogs;
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.lang.Thread;
 import javafx.animation.Timeline;
@@ -119,7 +124,12 @@ public class Main extends Application {
         FileInputStream iStream19 = new FileInputStream(
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedWhatIs.png");
         Image unselectedWhatIs = new Image(iStream19);     // Unselected what is button image
+        FileInputStream iStream20 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\saveButton.png");
+        Image saveButton = new Image(iStream20);
 
+
+        GridPane root = new GridPane();          // Creating a grid pane
 
 
         /**----------------------------------------------Nodes-----------------------------------------------------*/
@@ -141,8 +151,6 @@ public class Main extends Application {
         shortToggle.    setToggleGroup(toggleGroup);
         longToggle.     setToggleGroup(toggleGroup);
         loopToggle.     setToggleGroup(toggleGroup);
-
-
 
 
         // Image views to store the images of buttons for toggling effect (Selected/Unselected)
@@ -298,291 +306,237 @@ public class Main extends Application {
         };  // When long break button is clicked
         longToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeLongBreakImageToggle);
 
-
-
-        primaryStage.setTitle("Pomodoro Timer"); // Set title of program
-        GridPane root = new GridPane();          // Creating a grid pane
-        // Creating a dark red background to set to the main stage
-        Background darkRedBackground = new Background(new BackgroundFill(lightRedColor, CornerRadii.EMPTY, Insets.EMPTY));
-        root.setBackground(darkRedBackground);   // Set the color of the background
-        //----------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-        // Event handler for toggled loop button
-        EventHandler<MouseEvent> changeToggleLoopImage = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // Change current image to main pomodoro image / looping image
-                tomato1.setImage(studyImage1);
-                tomato2.setImage(studyImage2);
-            }
-        };
-        // Adding event filter for loop button click
+        EventHandler<MouseEvent> changeToggleLoopImage = mouseEvent -> {
+            tomato1.setImage(studyImage1);
+            tomato2.setImage(studyImage2);
+        };  // When loop button is clicked
         loopToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, changeToggleLoopImage);
 
-// Creating the short break timer
-        // Bind the timerLabel text property to the timeSeconds property
-        timerLabel.textProperty().bind(timeSeconds.asString());
-        timerLabel.setTextFill(Color.WHITE); // changing color of timer numbers
-        timerLabel.setStyle("-fx-font-size: 4em;");
 
-        // using the Long break toggle button 'longToggle'
+        // Adding nodes to pane
+        //                      column  row
+        root.add(titleView,     0, 0);
+        root.add(pomodoroToggle,0, 1);
+        root.add(tomato,        0, 2);
+        root.add(timerLabel,    0, 3);
+        root.add(customToggle,  1, 0);
+        root.add(shortToggle,   1, 1);
+        root.add(whatIsToggle,  2, 0);
+        root.add(longToggle,    2, 1);
+        root.add(loopToggle,    3, 1);
 
-        // Event handler for timer of 'longToggle'
-        longToggle.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (timeline != null) {
-                    timeline.stop();
-                }
-                timeSeconds.set(STARTTIME);
-                timeline = new Timeline();
-                timeline.getKeyFrames().add(
-                        new KeyFrame(Duration.seconds(STARTTIME+1),
-                        new KeyValue(timeSeconds, 0)));
-                timeline.playFromStart();
-            }
-        });
-
-// Module end
-
-        // Adding nodes to pane          column    row
-        root.add(titleView,        0, 0);
-        root.add(customToggle,1, 0);
-        root.add(whatIsToggle,     2, 0);
-
-        root.add(pomodoroToggle,   0, 1);
-
-
-
-        //root.add(iView, 0, 2);
-        root.add(tomato,            0,2);
-        root.add(loopToggle,        3,1);
-        root.add(longToggle,   2,1);
-        root.add(shortToggle, 1,1);
-        //root.add(shortToggle, 0, 3);
-        //root.add(pomodoroToggle, 0, 3);
-        //root.add(customToggle, 0, 3);
-        root.add(timerLabel, 0, 3);
-
-
-        // Setting spacing between nodes on gridpane
+        // Setting spacing between nodes on root pane
         root.setHgap(10);
         root.setVgap(10);
 
 
+        // Creating the display for the timer
+        timerLabel.textProperty().bind(timeSeconds.asString()); // Bind timerLabel text property to timeSeconds property
+        timerLabel.setTextFill(Color.WHITE);
+        timerLabel.setStyle("-fx-font-size: 4em;");
+
+        longToggle.setOnAction(actionEvent -> {
+            if (timeline != null) {
+                timeline.stop();
+            }
+            timeSeconds.set(STARTTIME);
+            timeline = new Timeline();
+            timeline.getKeyFrames().add(
+                    new KeyFrame(Duration.seconds(STARTTIME+1),
+                            new KeyValue(timeSeconds, 0)));
+            timeline.playFromStart();
+        });  // Event handler for timer of 'longToggle' to trigger start of timer
+
 
         // Creating the event handler to open a new information window when what is button is clicked
-        EventHandler<MouseEvent> whatIsHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
+        EventHandler<MouseEvent> whatIsHandler = mouseEvent -> {
+            Stage whatIsStage = new Stage();
+            whatIsStage.setTitle("What is a Pomodoro Timer?");
 
-                // Opening a new window what button is clicked
-                try {
+            // Declaring paragraph title string variables
+            String onlinePTimer    = "Online Pomodoro Timer";
+            String aboutTechnique = "About Pomodoro Technique";
+            String howToUse       = "How to use Pomodoro/Tomato timers";
 
-                    Stage whatIsStage = new Stage();
-                    whatIsStage.setTitle("What is a Pomodoro Timer?");
+            // Declaring paragraph string variables
+            String onlinePTimerParagraph = "TomatoTimers is a customizable and easy to use looping " +
+                    "pomodoro timer to boost your efficiency.";
+            String aboutParagraph = "Pomodoro Technique is a time management method developed by " +
+                    "Francesco Cirillo in the late 1980s. \nThis technique use timer to break down " +
+                    "works into a set of intervals separated by breaks. Pomodoro \ntechnique increases " +
+                    "productivity by taking short scheduled breaks regularly.";
+            String howToParagraph = " 1. Decide task to be done set timers to 25 minutes for one Pomodoro\n" +
+                    " 2. Work on task until timer is complete\n" +
+                    " 3. After timer completion, put a checkmark on to-do list\n" +
+                    " 4. Take a 5 minutes short break\n" +
+                    " 5. After four Pomodoro take a long break\n" +
+                    " 6. Repeat step 1\n\n" +
+                    "USE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW";
 
-                    // Text to display discription of what is window purpose
-                    Text whatIsText = new Text();
+            // Creating text objects and Storing paragraph and title string variables in text objects
+            Text title1 = new Text(onlinePTimer);
+            Text title2 = new Text(aboutTechnique);
+            Text title3 = new Text(howToUse);
+            Text para1 = new Text(onlinePTimerParagraph);
+            Text para2 = new Text(aboutParagraph);
+            Text para3 = new Text(howToParagraph);
 
+            // Setting the positions of the nodes
+            title1.setX(17);
+            title1.setY(35);
+            para1.setX(17);
+            para1.setY(60);
 
-                    // Declaring paragraph title string variables
-                    String onlinePTimer    = "Online Pomodoro Timer";
-                    String aboutTechnique = "About Pomodoro Technique";
-                    String howToUse       = "How to use Pomodoro/Tomato timers";
+            title2.setX(17);
+            title2.setY(85);
+            para2.setX(17);
+            para2.setY(110);
 
-                    // Declaring paragraph string variables
-                    String onlinePTimerParagraph = "TomatoTimers is a customizable and easy to use looping " +
-                            "pomodoro timer to boost your efficiency.";
-                    String aboutParagraph = "Pomodoro Technique is a time management method developed by " +
-                            "Francesco Cirillo in the late 1980s. \nThis technique use timer to break down " +
-                            "works into a set of intervals separated by breaks. Pomodoro \ntechnique increases " +
-                            "productivity by taking short scheduled breaks regularly.";
-                    String howToParagraph = " 1. Decide task to be done set timers to 25 minutes for one Pomodoro\n" +
-                                            " 2. Work on task until timer is complete\n" +
-                                            " 3. After timer completion, put a checkmark on to-do list\n" +
-                                            " 4. Take a 5 minutes short break\n" +
-                                            " 5. After four Pomodoro take a long break\n" +
-                                            " 6. Repeat step 1\n\n" +
-                                            "USE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW";
+            title3.setX(17);
+            title3.setY(170);
+            para3.setX(17);
+            para3.setY(195);
 
-                    // Creating text objects and Storing paragraph and title string variables in text objects
-                    Text title1 = new Text(onlinePTimer);
-                    Text title2 = new Text(aboutTechnique);
-                    Text title3 = new Text(howToUse);
-                    Text para1 = new Text(onlinePTimerParagraph);
-                    Text para2 = new Text(aboutParagraph);
-                    Text para3 = new Text(howToParagraph);
+            // Setting fonts of title text objects
+            title1.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            title2.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            title3.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
 
-                    // Setting the positions of the nodes
-                    title1.setX(17);
-                    title1.setY(35);
-                    para1.setX(17);
-                    para1.setY(60);
+            // Setting color of title text objects
+            title1.setFill(darkRedColor);
+            title2.setFill(darkRedColor);
+            title3.setFill(darkRedColor);
 
-                    title2.setX(17);
-                    title2.setY(85);
-                    para2.setX(17);
-                    para2.setY(110);
+            // Setting font styling for paragraphs objects
+            para1.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            para2.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            para3.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
 
-                    title3.setX(17);
-                    title3.setY(170);
-                    para3.setX(17);
-                    para3.setY(195);
+            // Setting color of paragraph text
+            para1.setFill(lightRedColor);
+            para2.setFill(lightRedColor);
+            para3.setFill(lightRedColor);
 
-                    // Setting fonts of title text objects
-                    title1.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-                    title2.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-                    title3.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            // Creating a new pane and adding description text to it
+            Pane whatIsPane = new Pane(title1, title2, title3, para1, para2, para3);
 
-                    // Setting color of title text objects
-                    title1.setFill(darkRedColor);
-                    title2.setFill(darkRedColor);
-                    title3.setFill(darkRedColor);
+            // Creating a new background fill
+            BackgroundFill whatIsBackGroundFill = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
+            Background whatIsBackGround = new Background(whatIsBackGroundFill); // Creating a new background
+            whatIsPane.setBackground(whatIsBackGround);    // Adding background color to pane
+            whatIsStage.setScene(new Scene(whatIsPane, 615, 330));
+            whatIsStage.show();
 
-                    // Setting font stylings for paragraphs objects
-                    para1.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
-                    para2.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
-                    para3.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
-
-                    // Setting color of paragraph text
-                    para1.setFill(lightRedColor);
-                    para2.setFill(lightRedColor);
-                    para3.setFill(lightRedColor);
-
-
-
-
-                    Group whatIsGroup = new Group(whatIsText);
-
-                    // Creating a new pane and adding description text to it
-                    Pane whatIsPane = new Pane(title1, title2, title3, para1, para2, para3);
-
-                    // Creating a new background fill
-                    BackgroundFill whatIsBackGroundFill = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
-
-                    // Creating a new background
-                    Background whatIsBackGround = new Background(whatIsBackGroundFill);
-
-                    // Adding background color to pane
-                    whatIsPane.setBackground(whatIsBackGround);
-
-                    whatIsStage.setScene(new Scene(whatIsPane, 615, 330));
-                    whatIsStage.show();
-
-                } finally {
-
-                }
-            }
         };
-        // Adding event filter for what is button click
         whatIsToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, whatIsHandler);
 
+
         // Creating event handler to open a new window when the custom timer button is clicked
-        EventHandler<MouseEvent> customTimerHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // Opening a new window when customer timer button is clicked
-                try {
-                    Stage customTimerStage = new Stage();             // Creating a stage
-                    customTimerStage.setTitle("Enter Custom Timer");  // Setting title of custom timer window
-                    Text lengthLabel = new Text("Pomodoro");       // Label to hold length of pomodoro
-                    Text shrtBreakLabel = new Text("Short Break"); // Label to hold length of short break
-                    Text lngBreakLabel = new Text("Long Break");   // Label to hold length of long break
-                    TextField pomTxtFld = new TextField();            // TextField for pomodoro length ui
-                    TextField shtBKTF = new TextField();              // TextField for short break ui
-                    TextField lngBkTF = new TextField();              // TextField for long break ui
+        EventHandler<MouseEvent> customTimerHandler = mouseEvent -> {
 
-                    // Setting font style for labels
-                    lengthLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-                    shrtBreakLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-                    lngBreakLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            Stage customTimerStage = new Stage();             // Creating a stage
+            customTimerStage.setTitle("Enter Custom Timer");  // Setting title of custom timer window
+            Text lengthLabel = new Text("Pomodoro");       // Label to hold length of pomodoro
+            Text shrtBreakLabel = new Text("Short Break"); // Label to hold length of short break
+            Text lngBreakLabel = new Text("Long Break");   // Label to hold length of long break
+            TextField pomTxtFld = new TextField();            // TextField for pomodoro length ui
+            TextField shtBKTF = new TextField();              // TextField for short break ui
+            TextField lngBkTF = new TextField();              // TextField for long break ui
+            GridPane customTimerPane = new GridPane();        // Creating a new GridPane
+            Button saveButton2 = new Button();
+            ImageView saveButtonImageView = new ImageView(saveButton);
 
-                    // Setting color of labels
-                    lengthLabel.setFill(lightRedColor);
-                    shrtBreakLabel.setFill(lightRedColor);
-                    lngBreakLabel.setFill(lightRedColor);
+            saveButton2.setGraphic(saveButtonImageView);
+            saveButton2.setPadding(inset1);
 
-                    // Setting the width and heights of the TextFields
-                    pomTxtFld.setPrefWidth(450);
-                    pomTxtFld.setPrefHeight(32);
-                    shtBKTF.setPrefHeight(32);
-                    lngBkTF.setPrefHeight(32);
 
-                    // Creating a new GridPane
-                    GridPane customTimerPane = new GridPane();
 
-                    // Creating a new background fill
-                    BackgroundFill cstm = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"));
 
-                    // Creating a new background
-                    Background customTimeBkgnd = new Background(cstm);
-
-                    // Adding background color to pane
-                    customTimerPane.setBackground(customTimeBkgnd);
-
-                    // Setting the padding for the GridPane
-                    customTimerPane.setPadding(new Insets(10, 10, 10, 10));
-
-                    // Setting vertical and horizontal gaps between the columns
-                    customTimerPane.setVgap(10);
-                    customTimerPane.setHgap(5);
-
-                    // Setting Grid alignment
-                    customTimerPane.setAlignment(Pos.TOP_LEFT);
-
-                    // Arranging all the nodes in the grid
-                    customTimerPane.add(lengthLabel,    0, 0);
-                    customTimerPane.add(pomTxtFld,      0, 1);
-                    customTimerPane.add(shrtBreakLabel, 0, 2);
-                    customTimerPane.add(shtBKTF,        0, 3);
-                    customTimerPane.add(lngBreakLabel,  0, 4);
-                    customTimerPane.add(lngBkTF,        0, 5);
-
-                    // Adding pane to a new scene and setting scene to the stage
-                    customTimerStage.setScene(new Scene(customTimerPane, 615, 330));
-                    customTimerStage.show();  // Displaying stage
-
-                } finally {
-
+            saveButton2.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    //Opening a dialog box
+                    fileChooser.showSaveDialog(customTimerStage);
                 }
-            }
+            });
+
+
+            // Setting text fields with initial values
+            pomTxtFld.setText("25");
+            shtBKTF.setText("15");
+            lngBkTF.setText("5");
+
+
+            // Removing default focus from pomTxtFld on window open
+            BooleanProperty focus = new SimpleBooleanProperty(true); // Stores focus on stage load
+            pomTxtFld.focusedProperty().addListener((observable,  oldValue,  newValue) -> {
+                if(newValue && focus.get()){
+                    customTimerPane.requestFocus(); // Delegate the focus to container
+                    focus.setValue(false);
+                }
+            });
+
+
+            // Setting font style for labels
+            lengthLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            shrtBreakLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            lngBreakLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
+
+            // Setting color of labels
+            lengthLabel.setFill(lightRedColor);
+            shrtBreakLabel.setFill(lightRedColor);
+            lngBreakLabel.setFill(lightRedColor);
+
+            // Setting the width and heights of the TextFields
+            pomTxtFld.setPrefWidth(450);
+            pomTxtFld.setPrefHeight(32);
+            shtBKTF.setPrefHeight(32);
+            lngBkTF.setPrefHeight(32);
+
+            // Creating a new background fill
+            BackgroundFill cstm = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
+
+            // Creating a new background
+            Background customTimeBkgnd = new Background(cstm);
+
+            // Adding background color to pane
+            customTimerPane.setBackground(customTimeBkgnd);
+
+            // Setting the padding for the GridPane
+            customTimerPane.setPadding(new Insets(10, 10, 10, 10));
+
+            // Setting vertical and horizontal gaps between the columns
+            customTimerPane.setVgap(10);
+            customTimerPane.setHgap(5);
+
+            // Setting Grid alignment
+            customTimerPane.setAlignment(Pos.TOP_LEFT);
+
+            // Arranging all the nodes in the grid
+            customTimerPane.add(lengthLabel,    0, 0);
+            customTimerPane.add(pomTxtFld,      0, 1);
+            customTimerPane.add(shrtBreakLabel, 0, 2);
+            customTimerPane.add(shtBKTF,        0, 3);
+            customTimerPane.add(lngBreakLabel,  0, 4);
+            customTimerPane.add(lngBkTF,        0, 5);
+            customTimerPane.add(saveButton2,    1, 6);
+
+            // Adding pane to a new scene and setting scene to the stage
+            customTimerStage.setScene(new Scene(customTimerPane, 615, 330));
+            customTimerStage.show();  // Displaying stage
+
         };
-        // Adding event filter for custom timer button click
         customToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, customTimerHandler);
 
+
+        primaryStage.setTitle("Pomodoro Timer");
+        // Creating a dark red background to set to the main stage
+        Background darkRedBackground = new Background(new BackgroundFill(lightRedColor, CornerRadii.EMPTY, Insets.EMPTY));
+        root.setBackground(darkRedBackground);   // Set the color of the background
         primaryStage.setScene(new Scene(root, 1500, 700));
-
         primaryStage.show();
-        //sfsdf
-    }
-
-    public class Tuna implements Runnable {
-
-        ImageView a;
-        Image b, c;
-
-        public Tuna (ImageView x, Image y, Image z) {
-            a = x;
-            b = y;
-            c = z;
-        };
-
-        public void run(){
-            int x = 1;
-            try {
-                while (x!=3) {
-                    a.setImage(c);
-                    Thread.sleep(1000);
-                    a.setImage(b);
-                    x++;
-                }
-            } catch (Exception e) {}
-        }
     }
 
     public static void main(String[] args) {
