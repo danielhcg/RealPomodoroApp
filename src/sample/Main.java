@@ -14,14 +14,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.*;
 import java.lang.Thread;
 import javafx.animation.Timeline;
 import javafx.animation.KeyValue;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
-import java.io.FileInputStream;
+
 import static javafx.scene.paint.Color.rgb;
 
 // Classes I imported that didn't come with the sample
@@ -35,6 +36,10 @@ import javafx.event.ActionEvent;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+
+//import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class Main extends Application {
@@ -453,12 +458,27 @@ public class Main extends Application {
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save");
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"));
+            ExtensionFilter txtOnly = new ExtensionFilter("Text Files", "*.txt");
+            fileChooser.getExtensionFilters().add(txtOnly);
+            //fileChooser.setInitialDirectory(new File("Desktop"));// Set initial directory to desktop
 
             saveButton2.setOnAction(new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent event) {
-                    //Opening a dialog box
-                    fileChooser.showSaveDialog(customTimerStage);
+
+                    String outputFileName = null;  // Declaring variable to store location of file save
+
+
+                    FileOutputStream out = null; // Creating a new FileOutputStream
+
+                    try {
+                        String pomodoroSave = pomTxtFld.getText();  // Assigning value stored in Pomodoro TextField to a string variable
+                        byte pomByte[] = pomodoroSave.getBytes();  // Saving input as bytes
+
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
 
