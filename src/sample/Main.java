@@ -132,6 +132,9 @@ public class Main extends Application {
         FileInputStream iStream20 = new FileInputStream(
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\saveButton.png");
         Image saveButton = new Image(iStream20);
+        FileInputStream iStream21 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\loadButton.png");
+        Image loadButton = new Image(iStream21);
 
 
         GridPane root = new GridPane();          // Creating a grid pane
@@ -448,40 +451,63 @@ public class Main extends Application {
             TextField shtBKTF = new TextField();              // TextField for short break ui
             TextField lngBkTF = new TextField();              // TextField for long break ui
             GridPane customTimerPane = new GridPane();        // Creating a new GridPane
+
             Button saveButton2 = new Button();
             ImageView saveButtonImageView = new ImageView(saveButton);
-
             saveButton2.setGraphic(saveButtonImageView);
             saveButton2.setPadding(inset1);
 
+            Button loadButton2 = new Button();
+            ImageView loadButtonImageView = new ImageView(loadButton);
+            loadButton2.setGraphic(loadButtonImageView);
+            loadButton2.setPadding(inset1);
 
 
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save");
-            ExtensionFilter txtOnly = new ExtensionFilter("Text Files", "*.txt");
-            fileChooser.getExtensionFilters().add(txtOnly);
-            //fileChooser.setInitialDirectory(new File("Desktop"));// Set initial directory to desktop
 
-            saveButton2.setOnAction(new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent event) {
+            // Event handler to bring up save dialog box and save the inputs
+            EventHandler<MouseEvent> save2Event = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
 
-                    String outputFileName = null;  // Declaring variable to store location of file save
+                    // Body of event handler
+                    FileChooser fileChooser1 = new FileChooser();
 
+                    // Set extension filter for text files
+                    FileChooser.ExtensionFilter myFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                    fileChooser1.getExtensionFilters().add(myFilter);
 
-                    FileOutputStream out = null; // Creating a new FileOutputStream
+                    // Show save dialog box
+                    File myFile = fileChooser1.showSaveDialog(customTimerStage);
 
-                    try {
-                        String pomodoroSave = pomTxtFld.getText();  // Assigning value stored in Pomodoro TextField to a string variable
-                        byte pomByte[] = pomodoroSave.getBytes();  // Saving input as bytes
-
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                    if (myFile != null) {
+                        saveTextToFile(pomTxtFld.getText(), shtBKTF.getText(), lngBkTF.getText(), myFile);
                     }
-
                 }
-            });
+            };
+            saveButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, save2Event);
 
+            // Event handler to populate text fields by loading a text file
+            EventHandler<MouseEvent> load2Event = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+
+                    FileInputStream in = null;
+                    FileChooser inputFile = new FileChooser();
+
+                    File selectedFile = inputFile.showOpenDialog(customTimerStage);
+
+
+
+
+
+
+                    // Body of event handler
+                    pomTxtFld.clear();
+                    shtBKTF.clear();
+                    lngBkTF.clear();
+                }
+            };
+            loadButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, load2Event);
 
             // Setting text fields with initial values
             pomTxtFld.setText("25");
@@ -542,6 +568,7 @@ public class Main extends Application {
             customTimerPane.add(lngBreakLabel,  0, 4);
             customTimerPane.add(lngBkTF,        0, 5);
             customTimerPane.add(saveButton2,    1, 6);
+            customTimerPane.add(loadButton2,    1, 7);
 
             // Adding pane to a new scene and setting scene to the stage
             customTimerStage.setScene(new Scene(customTimerPane, 615, 330));
@@ -557,6 +584,17 @@ public class Main extends Application {
         root.setBackground(darkRedBackground);   // Set the color of the background
         primaryStage.setScene(new Scene(root, 1500, 700));
         primaryStage.show();
+    }
+
+    void saveTextToFile(String field1, String field2, String field3, File file) {
+        try{
+            PrintWriter myWriter;
+            myWriter = new PrintWriter(file);
+            myWriter.println(field1 + field2 + field3);
+            myWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
