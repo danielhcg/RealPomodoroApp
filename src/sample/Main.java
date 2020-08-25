@@ -18,6 +18,11 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.lang.Thread;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Scanner;
+
 import javafx.animation.Timeline;
 import javafx.animation.KeyValue;
 import javafx.animation.KeyFrame;
@@ -491,20 +496,83 @@ public class Main extends Application {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
 
-                    FileInputStream in = null;
-                    FileChooser inputFile = new FileChooser();
 
-                    File selectedFile = inputFile.showOpenDialog(customTimerStage);
-
-
-
-
-
-
-                    // Body of event handler
+                    // Clear TextFields
                     pomTxtFld.clear();
                     shtBKTF.clear();
                     lngBkTF.clear();
+
+                    File myFile = new File("C:\\Users\\Danny\\Desktop\\Test Saves\\test7.txt");
+                    FileReader fr = null;
+                    try {
+                        fr = new FileReader(myFile);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    char [] a = new char[50];
+                    try {
+                        fr.read(a);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    for (char c : a)
+                        System.out.print(c);
+
+                    try {
+                        fr.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+//                    FileChooser fileChooser = new FileChooser();
+//                    File myFile = fileChooser.showOpenDialog(customTimerStage);
+//
+//                    try {
+//                        Scanner in = new Scanner(new FileReader(myFile));
+//                        StringBuilder sb = new StringBuilder();
+//                        while(in.hasNext()) {
+//                            sb.append(in.next());
+//                        }
+//                        in.close();
+//                        String outString;
+//                        outString = sb.toString();
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+
+//                    // Enabling a file chooser
+//                    FileChooser loadFile = new FileChooser();
+//                    File myThisIsItFile = loadFile.showOpenDialog(customTimerStage);
+//
+//                    try {
+//                        FileReader myFileReader = new FileReader(myThisIsItFile);
+//                        BufferedReader br = new BufferedReader(myFileReader);
+//                        StringBuilder sb = new StringBuilder();
+//                        String line = br.readLine();
+//
+//                        while (line !=null) {
+//                            sb.append(line);
+//                            sb.append(System.lineSeparator());
+//                            line = br.readLine();
+//                        }
+//                        String everything = sb.toString();
+//                    } finally {
+//                        br.close();
+//                    }
+//                    catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+
+//                    loadFile.setTitle("Open Custom Timer File");
+//                    FileReader myLoadFile = new FileReader(myThisIsItFile);
+//                    if (loadFile != null) {
+//                        StringBuilder sb = new StringBuilder();
+//                        String line = br.readL
+//                    }
                 }
             };
             loadButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, load2Event);
@@ -586,6 +654,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    // To create a saved file
     void saveTextToFile(String field1, String field2, String field3, File file) {
         try{
             PrintWriter myWriter;
@@ -595,6 +664,10 @@ public class Main extends Application {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    void openFile(File myFile, String field1, String field2, String field3) {
+
     }
 
     public static void main(String[] args) {
