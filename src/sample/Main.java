@@ -502,28 +502,114 @@ public class Main extends Application {
                     shtBKTF.clear();
                     lngBkTF.clear();
 
-                    File myFile = new File("C:\\Users\\Danny\\Desktop\\Test Saves\\test7.txt");
-                    FileReader fr = null;
-                    try {
-                        fr = new FileReader(myFile);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    pomTxtFld.setText("");
+                    shtBKTF.setText("");
+                    lngBkTF.setText("");
 
-                    char [] a = new char[50];
+//                    File myFile = new File("C:\\Users\\Danny\\Desktop\\Test Saves\\test7.txt");
+//                    FileReader fr = null;
+//                    try {
+//                        fr = new FileReader(myFile);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    char [] a = new char[50];
+//                    try {
+//                        fr.read(a);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    for (char c : a) {
+//                        System.out.print(c);
+//                        pomTxtFld.setText(String.valueOf(c));
+//                        shtBKTF.setText(String.valueOf(c));
+//                        lngBkTF.setText(String.valueOf(c));
+//
+//                    }
+//                    try {
+//                        fr.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+
+
+
+
+//                      THIS IS THE WORKING VERSION
+//                    FileChooser fileChooser = new FileChooser();
+//                    File selectedFile = fileChooser.showOpenDialog(customTimerStage);
+//
+//                    FileInputStream in;
+//                    String s;
+//                    try{
+//                        File inputFile = new File(String.valueOf(selectedFile));
+//                        in = new FileInputStream(inputFile);
+//                        byte[] bt = new byte[(int) inputFile.length()];
+//                        in.read(bt);
+//                        s = new String(bt);
+//                        pomTxtFld.setText(s);
+//                        in.close();
+//                    } catch (java.io.IOException e) {
+//                        System.out.println("Cannot access");
+//                    }
+
+
+
+//                      PRINTS NULL TO EACH LINE
+//                    String[] lineList = null;
+//                    FileChooser fileChooser = new FileChooser();
+//                    File selectedFile = fileChooser.showOpenDialog(customTimerStage);
+//                    try{
+//
+//                        FileReader fr = new FileReader(selectedFile);
+//                        BufferedReader br = new BufferedReader(fr);
+//                        String line = " ";
+//
+//                        int lines = 0;
+//                        while (br.readLine() != null) {
+//                            lines++;
+//                        }
+//                        lineList = new String[lines];
+//                        int i = 0;
+//                        while((br.readLine()) != null){
+//                            lineList[i] = br.readLine();
+//                            i++;
+//                        }
+////                        pomTxtFld.setText(lineList[0]);
+////                        shtBKTF.setText(lineList[1]);
+////                        lngBkTF.setText(lineList[2]);
+//
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    System.out.print(lineList[0] + "\n");
+//                    System.out.print(lineList[1] + "\n");
+//                    System.out.print(lineList[2]);
+
+
+                    FileChooser fileChooser = new FileChooser();
+                    File selectedFile = fileChooser.showOpenDialog(customTimerStage);
+
                     try {
-                        fr.read(a);
+                        BufferedReader br = new BufferedReader(new FileReader(selectedFile));
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            System.out.println(line);
+                            pomTxtFld.setText(line);
+                            shtBKTF.setText(line);
+                            lngBkTF.setText(line);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    for (char c : a)
-                        System.out.print(c);
 
-                    try {
-                        fr.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+
+
+
 
 //                    FileChooser fileChooser = new FileChooser();
 //                    File myFile = fileChooser.showOpenDialog(customTimerStage);
