@@ -502,9 +502,9 @@ public class Main extends Application {
                     shtBKTF.clear();
                     lngBkTF.clear();
 
-                    pomTxtFld.setText("");
-                    shtBKTF.setText("");
-                    lngBkTF.setText("");
+//                    pomTxtFld.setText("");
+//                    shtBKTF.setText("");
+//                    lngBkTF.setText("");
 
 //                    File myFile = new File("C:\\Users\\Danny\\Desktop\\Test Saves\\test7.txt");
 //                    FileReader fr = null;
@@ -590,18 +590,90 @@ public class Main extends Application {
 //                    System.out.print(lineList[2]);
 
 
-                    FileChooser fileChooser = new FileChooser();
-                    File selectedFile = fileChooser.showOpenDialog(customTimerStage);
+
+                    String[] lineList;
+
+
+
+                    BufferedReader br = null;
+                    String line;
+
 
                     try {
-                        BufferedReader br = new BufferedReader(new FileReader(selectedFile));
-                        String line;
+
+                        FileChooser fileChooser = new FileChooser();
+                        File selectedFile = fileChooser.showOpenDialog(customTimerStage);
+                        FileReader fr = new FileReader(selectedFile);
+                        br = new BufferedReader(fr);
+
                         while ((line = br.readLine()) != null) {
                             System.out.println(line);
                             pomTxtFld.setText(line);
                             shtBKTF.setText(line);
-                            lngBkTF.setText(line);
                         }
+
+                        line = br.readLine();
+                        lngBkTF.setText(line);
+
+
+//                        // Counting the number of lines in the file
+//                        int lines = 0;
+//                        while (br.readLine() != null)
+//                            lines++;
+//
+//                        // Line counter test
+//                        System.out.println(lines);
+//
+//                        // Create a a string array of length lines
+//                        lineList = new String[lines];
+//
+//                        // Incrementor of loop to read lines
+//                        int i = 0;
+//
+//
+//                        // Populating array with lines from file
+//                        while((line = br.readLine()) != null) {
+//                            lineList[i] = br.readLine();
+//                            System.out.println(lineList[i]);
+//                            i++;
+//                        }
+//
+//                        // prints null
+//                        System.out.println("Is this null? : " + lineList[0]);
+//
+//                        pomTxtFld.setText("Is this null? : " + lineList[0]);
+//                        shtBKTF.setText("Is this null? : " + lineList[1]);
+//                        lngBkTF.setText("Is this null? : " + lineList[2]);
+
+//                        String[] lineList;
+//
+//
+//                        String line = "";
+//                        int lines = 0;
+//                        while (br.readLine() != null) {
+//                            lines++;
+//                        }
+//                        lineList = new String[lines];
+//
+//                        int i = 0;
+//                        while((br.readLine()) != null) {
+//
+//                            lineList[i] = br.readLine();
+//                            i++;
+//                        }
+//
+//                        System.out.println("this is line 1 " + lineList[0]);
+//                        System.out.println("this is line 2 " + lineList[1]);
+//                        System.out.println("this is line 3 " + lineList[2]);
+//
+//
+//                        while ((line = br.readLine()) != null) {
+//                            System.out.println(line);
+//                            pomTxtFld.setText(line);
+//                            shtBKTF.setText(line);
+//                            lngBkTF.setText(line);
+//                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
