@@ -1,10 +1,8 @@
 package sample;
 
-import com.sun.glass.ui.CommonDialogs;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,10 +15,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.lang.Thread;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javafx.animation.Timeline;
@@ -42,7 +37,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 
 //import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -52,8 +46,8 @@ public class Main extends Application {
     // Variables for timer
     private static final Integer STARTTIME = 1500;
     private Timeline timeline;
-    private Label timerLabel = new Label();
-    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
+    private final Label timerLabel = new Label();
+    private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -467,278 +461,52 @@ public class Main extends Application {
             loadButton2.setGraphic(loadButtonImageView);
             loadButton2.setPadding(inset1);
 
+            // Setting text fields with initial values
+            pomTxtFld.setText("25");
+            shtBKTF.setText("15");
+            lngBkTF.setText("5");
+
 
 
             // Event handler to bring up save dialog box and save the inputs
-            EventHandler<MouseEvent> save2Event = new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
+            EventHandler<MouseEvent> save2Event = mouseEvent1 -> {
 
-                    // Body of event handler
-                    FileChooser fileChooser1 = new FileChooser();
+                // Body of event handler
+                FileChooser fileChooser1 = new FileChooser();
 
-                    // Set extension filter for text files
-                    FileChooser.ExtensionFilter myFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-                    fileChooser1.getExtensionFilters().add(myFilter);
+                // Set extension filter for text files
+                FileChooser.ExtensionFilter myFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                fileChooser1.getExtensionFilters().add(myFilter);
 
-                    // Show save dialog box
-                    File myFile = fileChooser1.showSaveDialog(customTimerStage);
+                // Show save dialog box
+                File myFile = fileChooser1.showSaveDialog(customTimerStage);
 
-                    if (myFile != null) {
-                        saveTextToFile(pomTxtFld.getText(), shtBKTF.getText(), lngBkTF.getText(), myFile);
-                    }
+                if (myFile != null) {
+                    saveTextToFile(pomTxtFld.getText(), shtBKTF.getText(), lngBkTF.getText(), myFile);
                 }
             };
             saveButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, save2Event);
 
             // Event handler to populate text fields by loading a text file
-            EventHandler<MouseEvent> load2Event = new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
+            EventHandler<MouseEvent> load2Event = mouseEvent12 -> {
 
+                // Selecting file to use
+                FileChooser fileChooser = new FileChooser();
+                File selectedFile = fileChooser.showOpenDialog(customTimerStage);
 
-                    // Clear TextFields
-                    pomTxtFld.clear();
-                    shtBKTF.clear();
-                    lngBkTF.clear();
+                // Clear TextFields
+                pomTxtFld.clear();
+                shtBKTF.clear();
+                lngBkTF.clear();
 
-//                    pomTxtFld.setText("");
-//                    shtBKTF.setText("");
-//                    lngBkTF.setText("");
-
-//                    File myFile = new File("C:\\Users\\Danny\\Desktop\\Test Saves\\test7.txt");
-//                    FileReader fr = null;
-//                    try {
-//                        fr = new FileReader(myFile);
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    char [] a = new char[50];
-//                    try {
-//                        fr.read(a);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    for (char c : a) {
-//                        System.out.print(c);
-//                        pomTxtFld.setText(String.valueOf(c));
-//                        shtBKTF.setText(String.valueOf(c));
-//                        lngBkTF.setText(String.valueOf(c));
-//
-//                    }
-//                    try {
-//                        fr.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-
-
-
-
-//                      THIS IS THE WORKING VERSION
-//                    FileChooser fileChooser = new FileChooser();
-//                    File selectedFile = fileChooser.showOpenDialog(customTimerStage);
-//
-//                    FileInputStream in;
-//                    String s;
-//                    try{
-//                        File inputFile = new File(String.valueOf(selectedFile));
-//                        in = new FileInputStream(inputFile);
-//                        byte[] bt = new byte[(int) inputFile.length()];
-//                        in.read(bt);
-//                        s = new String(bt);
-//                        pomTxtFld.setText(s);
-//                        in.close();
-//                    } catch (java.io.IOException e) {
-//                        System.out.println("Cannot access");
-//                    }
-
-
-
-//                      PRINTS NULL TO EACH LINE
-//                    String[] lineList = null;
-//                    FileChooser fileChooser = new FileChooser();
-//                    File selectedFile = fileChooser.showOpenDialog(customTimerStage);
-//                    try{
-//
-//                        FileReader fr = new FileReader(selectedFile);
-//                        BufferedReader br = new BufferedReader(fr);
-//                        String line = " ";
-//
-//                        int lines = 0;
-//                        while (br.readLine() != null) {
-//                            lines++;
-//                        }
-//                        lineList = new String[lines];
-//                        int i = 0;
-//                        while((br.readLine()) != null){
-//                            lineList[i] = br.readLine();
-//                            i++;
-//                        }
-////                        pomTxtFld.setText(lineList[0]);
-////                        shtBKTF.setText(lineList[1]);
-////                        lngBkTF.setText(lineList[2]);
-//
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    System.out.print(lineList[0] + "\n");
-//                    System.out.print(lineList[1] + "\n");
-//                    System.out.print(lineList[2]);
-
-
-
-                    String[] lineList;
-
-
-
-                    BufferedReader br = null;
-                    String line;
-
-
-                    try {
-
-                        FileChooser fileChooser = new FileChooser();
-                        File selectedFile = fileChooser.showOpenDialog(customTimerStage);
-                        FileReader fr = new FileReader(selectedFile);
-                        br = new BufferedReader(fr);
-
-                        while ((line = br.readLine()) != null) {
-                            System.out.println(line);
-                            pomTxtFld.setText(line);
-                            shtBKTF.setText(line);
-                        }
-
-                        line = br.readLine();
-                        lngBkTF.setText(line);
-
-
-//                        // Counting the number of lines in the file
-//                        int lines = 0;
-//                        while (br.readLine() != null)
-//                            lines++;
-//
-//                        // Line counter test
-//                        System.out.println(lines);
-//
-//                        // Create a a string array of length lines
-//                        lineList = new String[lines];
-//
-//                        // Incrementor of loop to read lines
-//                        int i = 0;
-//
-//
-//                        // Populating array with lines from file
-//                        while((line = br.readLine()) != null) {
-//                            lineList[i] = br.readLine();
-//                            System.out.println(lineList[i]);
-//                            i++;
-//                        }
-//
-//                        // prints null
-//                        System.out.println("Is this null? : " + lineList[0]);
-//
-//                        pomTxtFld.setText("Is this null? : " + lineList[0]);
-//                        shtBKTF.setText("Is this null? : " + lineList[1]);
-//                        lngBkTF.setText("Is this null? : " + lineList[2]);
-
-//                        String[] lineList;
-//
-//
-//                        String line = "";
-//                        int lines = 0;
-//                        while (br.readLine() != null) {
-//                            lines++;
-//                        }
-//                        lineList = new String[lines];
-//
-//                        int i = 0;
-//                        while((br.readLine()) != null) {
-//
-//                            lineList[i] = br.readLine();
-//                            i++;
-//                        }
-//
-//                        System.out.println("this is line 1 " + lineList[0]);
-//                        System.out.println("this is line 2 " + lineList[1]);
-//                        System.out.println("this is line 3 " + lineList[2]);
-//
-//
-//                        while ((line = br.readLine()) != null) {
-//                            System.out.println(line);
-//                            pomTxtFld.setText(line);
-//                            shtBKTF.setText(line);
-//                            lngBkTF.setText(line);
-//                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-
-
-
-
-//                    FileChooser fileChooser = new FileChooser();
-//                    File myFile = fileChooser.showOpenDialog(customTimerStage);
-//
-//                    try {
-//                        Scanner in = new Scanner(new FileReader(myFile));
-//                        StringBuilder sb = new StringBuilder();
-//                        while(in.hasNext()) {
-//                            sb.append(in.next());
-//                        }
-//                        in.close();
-//                        String outString;
-//                        outString = sb.toString();
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-
-//                    // Enabling a file chooser
-//                    FileChooser loadFile = new FileChooser();
-//                    File myThisIsItFile = loadFile.showOpenDialog(customTimerStage);
-//
-//                    try {
-//                        FileReader myFileReader = new FileReader(myThisIsItFile);
-//                        BufferedReader br = new BufferedReader(myFileReader);
-//                        StringBuilder sb = new StringBuilder();
-//                        String line = br.readLine();
-//
-//                        while (line !=null) {
-//                            sb.append(line);
-//                            sb.append(System.lineSeparator());
-//                            line = br.readLine();
-//                        }
-//                        String everything = sb.toString();
-//                    } finally {
-//                        br.close();
-//                    }
-//                    catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                    catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-
-//                    loadFile.setTitle("Open Custom Timer File");
-//                    FileReader myLoadFile = new FileReader(myThisIsItFile);
-//                    if (loadFile != null) {
-//                        StringBuilder sb = new StringBuilder();
-//                        String line = br.readL
-//                    }
+                // Populating textfields
+                try {
+                    loadFile(selectedFile, pomTxtFld, shtBKTF, lngBkTF);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             };
             loadButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, load2Event);
-
-            // Setting text fields with initial values
-            pomTxtFld.setText("25");
-            shtBKTF.setText("15");
-            lngBkTF.setText("5");
 
 
             // Removing default focus from pomTxtFld on window open
@@ -817,15 +585,32 @@ public class Main extends Application {
         try{
             PrintWriter myWriter;
             myWriter = new PrintWriter(file);
-            myWriter.println(field1 + field2 + field3);
+            myWriter.println(field1 + "\n" + field2 + "\n" + field3);
             myWriter.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    void openFile(File myFile, String field1, String field2, String field3) {
 
+    void loadFile(File myFile, TextField txt1, TextField txt2, TextField txt3) throws IOException {
+
+        try (Scanner myScan = new Scanner(myFile)) {
+
+            ArrayList<String> fileLine = new ArrayList<>();
+
+            // Populating ArrayList with file line scans
+            while (myScan.hasNextLine()) {
+                fileLine.add(myScan.nextLine());
+            }
+            // Converting ArrayList to object array
+            Object[] objects = fileLine.toArray();
+
+            // Displaying elements
+            txt1.setText(String.valueOf(objects[0]));
+            txt2.setText(String.valueOf(objects[1]));
+            txt3.setText(String.valueOf(objects[2]));
+        }
     }
 
     public static void main(String[] args) {
