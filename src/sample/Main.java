@@ -1,22 +1,16 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import javafx.animation.Timeline;
 import javafx.animation.KeyValue;
@@ -26,19 +20,14 @@ import javafx.util.Duration;
 import static javafx.scene.paint.Color.rgb;
 
 // Classes I imported that didn't come with the sample
-import javafx.scene.text.Text;
 import javafx.scene.Group;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.stage.FileChooser;
 
-//import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class Main extends Application {
@@ -49,15 +38,14 @@ public class Main extends Application {
     private final Label timerLabel = new Label();
     private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
 
         /**-------------------------------------Variable Declarations-------------------------------------------*/
 
         // Creating colors to use in app
-        Color darkRedColor = rgb(165, 43, 52);
         Color lightRedColor = rgb(197, 94, 94);
-        Color offWhiteColor = rgb(255, 237, 229);
 
         // Creating inset length for button borders, not sure why they appear when I import the images
         Insets inset1 = new Insets(0.0);
@@ -128,13 +116,6 @@ public class Main extends Application {
         FileInputStream iStream19 = new FileInputStream(
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedWhatIs.png");
         Image unselectedWhatIs = new Image(iStream19);     // Unselected what is button image
-        FileInputStream iStream20 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\saveButton.png");
-        Image saveButton = new Image(iStream20);
-        FileInputStream iStream21 = new FileInputStream(
-                "C:\\Users\\Danny\\Desktop\\RealPomApp\\loadButton.png");
-        Image loadButton = new Image(iStream21);
-
 
         GridPane root = new GridPane();          // Creating a grid pane
 
@@ -230,22 +211,22 @@ public class Main extends Application {
         ImageView selectedCustomHover =     new ImageView(selectedCustom);
 
         pomodoroToggle.addEventHandler(MouseEvent.MOUSE_MOVED,           // Selected main pomodoro button
-                mouseEvent -> { pomodoroToggle.setGraphic(selectedMainPomHover); }
+                mouseEvent -> pomodoroToggle.setGraphic(selectedMainPomHover)
         );
         shortToggle.addEventHandler(MouseEvent.MOUSE_MOVED,             // Selected short break button
-                mouseEvent -> { shortToggle.setGraphic(selectedShortBreakHover); }
+                mouseEvent -> shortToggle.setGraphic(selectedShortBreakHover)
         );
         longToggle.addEventHandler(MouseEvent.MOUSE_MOVED,              // Selected long break button
-                mouseEvent -> { longToggle.setGraphic(selectedLongBreakHover); }
+                mouseEvent -> longToggle.setGraphic(selectedLongBreakHover)
         );
         loopToggle.addEventHandler(MouseEvent.MOUSE_MOVED,              // Selected loop button
-                mouseEvent -> { loopToggle.setGraphic(selectedLoopHover); }
+                mouseEvent -> loopToggle.setGraphic(selectedLoopHover)
         );
         whatIsToggle.addEventHandler(MouseEvent.MOUSE_MOVED,            // Selected what is button
-                mouseEvent -> { whatIsToggle.setGraphic(selectedWhatIsHover); }
+                mouseEvent -> whatIsToggle.setGraphic(selectedWhatIsHover)
         );
         customToggle.addEventHandler(MouseEvent.MOUSE_MOVED,            // Selected custom button
-                mouseEvent -> { customToggle.setGraphic(selectedCustomHover); }
+                mouseEvent -> customToggle.setGraphic(selectedCustomHover)
         );
 
         pomodoroToggle.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET,  // Unselected main pomodoro button
@@ -354,222 +335,17 @@ public class Main extends Application {
             timeline.playFromStart();
         });  // Event handler for timer of 'longToggle' to trigger start of timer
 
+        // Event handler that invokes the InfoBox class and calls the display method
+        whatIsToggle.setOnAction(e -> InfoBox.display());
 
-        // Creating the event handler to open a new information window when what is button is clicked
-        EventHandler<MouseEvent> whatIsHandler = mouseEvent -> {
-            Stage whatIsStage = new Stage();
-            whatIsStage.setTitle("What is a Pomodoro Timer?");
-
-            // Declaring paragraph title string variables
-            String onlinePTimer    = "Online Pomodoro Timer";
-            String aboutTechnique = "About Pomodoro Technique";
-            String howToUse       = "How to use Pomodoro/Tomato timers";
-
-            // Declaring paragraph string variables
-            String onlinePTimerParagraph = "TomatoTimers is a customizable and easy to use looping " +
-                    "pomodoro timer to boost your efficiency.";
-            String aboutParagraph = "Pomodoro Technique is a time management method developed by " +
-                    "Francesco Cirillo in the late 1980s. \nThis technique use timer to break down " +
-                    "works into a set of intervals separated by breaks. Pomodoro \ntechnique increases " +
-                    "productivity by taking short scheduled breaks regularly.";
-            String howToParagraph = " 1. Decide task to be done set timers to 25 minutes for one Pomodoro\n" +
-                    " 2. Work on task until timer is complete\n" +
-                    " 3. After timer completion, put a checkmark on to-do list\n" +
-                    " 4. Take a 5 minutes short break\n" +
-                    " 5. After four Pomodoro take a long break\n" +
-                    " 6. Repeat step 1\n\n" +
-                    "USE THE LOOP BUTTON TO DO STEP 1 UNTIL STEP 5 IN A ROW";
-
-            // Creating text objects and Storing paragraph and title string variables in text objects
-            Text title1 = new Text(onlinePTimer);
-            Text title2 = new Text(aboutTechnique);
-            Text title3 = new Text(howToUse);
-            Text para1 = new Text(onlinePTimerParagraph);
-            Text para2 = new Text(aboutParagraph);
-            Text para3 = new Text(howToParagraph);
-
-            // Setting the positions of the nodes
-            title1.setX(17);
-            title1.setY(35);
-            para1.setX(17);
-            para1.setY(60);
-
-            title2.setX(17);
-            title2.setY(85);
-            para2.setX(17);
-            para2.setY(110);
-
-            title3.setX(17);
-            title3.setY(170);
-            para3.setX(17);
-            para3.setY(195);
-
-            // Setting fonts of title text objects
-            title1.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-            title2.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-            title3.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-
-            // Setting color of title text objects
-            title1.setFill(darkRedColor);
-            title2.setFill(darkRedColor);
-            title3.setFill(darkRedColor);
-
-            // Setting font styling for paragraphs objects
-            para1.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
-            para2.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
-            para3.setFont(Font.font("veranda", FontWeight.BOLD, FontPosture.REGULAR, 12));
-
-            // Setting color of paragraph text
-            para1.setFill(lightRedColor);
-            para2.setFill(lightRedColor);
-            para3.setFill(lightRedColor);
-
-            // Creating a new pane and adding description text to it
-            Pane whatIsPane = new Pane(title1, title2, title3, para1, para2, para3);
-
-            // Creating a new background fill
-            BackgroundFill whatIsBackGroundFill = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
-            Background whatIsBackGround = new Background(whatIsBackGroundFill); // Creating a new background
-            whatIsPane.setBackground(whatIsBackGround);    // Adding background color to pane
-            whatIsStage.setScene(new Scene(whatIsPane, 615, 330));
-            whatIsStage.show();
-
-        };
-        whatIsToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, whatIsHandler);
-
-
-        // Creating event handler to open a new window when the custom timer button is clicked
-        EventHandler<MouseEvent> customTimerHandler = mouseEvent -> {
-
-            Stage customTimerStage = new Stage();             // Creating a stage
-            customTimerStage.setTitle("Enter Custom Timer");  // Setting title of custom timer window
-            Text lengthLabel = new Text("Pomodoro");       // Label to hold length of pomodoro
-            Text shrtBreakLabel = new Text("Short Break"); // Label to hold length of short break
-            Text lngBreakLabel = new Text("Long Break");   // Label to hold length of long break
-            TextField pomTxtFld = new TextField();            // TextField for pomodoro length ui
-            TextField shtBKTF = new TextField();              // TextField for short break ui
-            TextField lngBkTF = new TextField();              // TextField for long break ui
-            GridPane customTimerPane = new GridPane();        // Creating a new GridPane
-
-            Button saveButton2 = new Button();
-            ImageView saveButtonImageView = new ImageView(saveButton);
-            saveButton2.setGraphic(saveButtonImageView);
-            saveButton2.setPadding(inset1);
-
-            Button loadButton2 = new Button();
-            ImageView loadButtonImageView = new ImageView(loadButton);
-            loadButton2.setGraphic(loadButtonImageView);
-            loadButton2.setPadding(inset1);
-
-            // Setting text fields with initial values
-            pomTxtFld.setText("25");
-            shtBKTF.setText("15");
-            lngBkTF.setText("5");
-
-
-
-            // Event handler to bring up save dialog box and save the inputs
-            EventHandler<MouseEvent> save2Event = mouseEvent1 -> {
-
-                // Body of event handler
-                FileChooser fileChooser1 = new FileChooser();
-
-                // Set extension filter for text files
-                FileChooser.ExtensionFilter myFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-                fileChooser1.getExtensionFilters().add(myFilter);
-
-                // Show save dialog box
-                File myFile = fileChooser1.showSaveDialog(customTimerStage);
-
-                if (myFile != null) {
-                    saveTextToFile(pomTxtFld.getText(), shtBKTF.getText(), lngBkTF.getText(), myFile);
-                }
-            };
-            saveButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, save2Event);
-
-            // Event handler to populate text fields by loading a text file
-            EventHandler<MouseEvent> load2Event = mouseEvent12 -> {
-
-                // Selecting file to use
-                FileChooser fileChooser = new FileChooser();
-                File selectedFile = fileChooser.showOpenDialog(customTimerStage);
-
-                // Clear TextFields
-                pomTxtFld.clear();
-                shtBKTF.clear();
-                lngBkTF.clear();
-
-                // Populating textfields
-                try {
-                    loadFile(selectedFile, pomTxtFld, shtBKTF, lngBkTF);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            };
-            loadButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, load2Event);
-
-
-            // Removing default focus from pomTxtFld on window open
-            BooleanProperty focus = new SimpleBooleanProperty(true); // Stores focus on stage load
-            pomTxtFld.focusedProperty().addListener((observable,  oldValue,  newValue) -> {
-                if(newValue && focus.get()){
-                    customTimerPane.requestFocus(); // Delegate the focus to container
-                    focus.setValue(false);
-                }
-            });
-
-
-            // Setting font style for labels
-            lengthLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-            shrtBreakLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-            lngBreakLabel.setFont(Font.font("impact", FontWeight.BOLD, FontPosture.REGULAR, 15));
-
-            // Setting color of labels
-            lengthLabel.setFill(lightRedColor);
-            shrtBreakLabel.setFill(lightRedColor);
-            lngBreakLabel.setFill(lightRedColor);
-
-            // Setting the width and heights of the TextFields
-            pomTxtFld.setPrefWidth(450);
-            pomTxtFld.setPrefHeight(32);
-            shtBKTF.setPrefHeight(32);
-            lngBkTF.setPrefHeight(32);
-
-            // Creating a new background fill
-            BackgroundFill cstm = new BackgroundFill(offWhiteColor, CornerRadii.EMPTY, Insets.EMPTY);
-
-            // Creating a new background
-            Background customTimeBkgnd = new Background(cstm);
-
-            // Adding background color to pane
-            customTimerPane.setBackground(customTimeBkgnd);
-
-            // Setting the padding for the GridPane
-            customTimerPane.setPadding(new Insets(10, 10, 10, 10));
-
-            // Setting vertical and horizontal gaps between the columns
-            customTimerPane.setVgap(10);
-            customTimerPane.setHgap(5);
-
-            // Setting Grid alignment
-            customTimerPane.setAlignment(Pos.TOP_LEFT);
-
-            // Arranging all the nodes in the grid
-            customTimerPane.add(lengthLabel,    0, 0);
-            customTimerPane.add(pomTxtFld,      0, 1);
-            customTimerPane.add(shrtBreakLabel, 0, 2);
-            customTimerPane.add(shtBKTF,        0, 3);
-            customTimerPane.add(lngBreakLabel,  0, 4);
-            customTimerPane.add(lngBkTF,        0, 5);
-            customTimerPane.add(saveButton2,    1, 6);
-            customTimerPane.add(loadButton2,    1, 7);
-
-            // Adding pane to a new scene and setting scene to the stage
-            customTimerStage.setScene(new Scene(customTimerPane, 615, 330));
-            customTimerStage.show();  // Displaying stage
-
-        };
-        customToggle.addEventFilter(MouseEvent.MOUSE_CLICKED, customTimerHandler);
+        // Event handler that invokes the CustomBox class and calls the display method
+        customToggle.setOnAction(e -> {
+            try {
+                CustomBox.display();
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
 
 
         primaryStage.setTitle("Pomodoro Timer");
@@ -578,39 +354,6 @@ public class Main extends Application {
         root.setBackground(darkRedBackground);   // Set the color of the background
         primaryStage.setScene(new Scene(root, 1500, 700));
         primaryStage.show();
-    }
-
-    // To create a saved file
-    void saveTextToFile(String field1, String field2, String field3, File file) {
-        try{
-            PrintWriter myWriter;
-            myWriter = new PrintWriter(file);
-            myWriter.println(field1 + "\n" + field2 + "\n" + field3);
-            myWriter.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    void loadFile(File myFile, TextField txt1, TextField txt2, TextField txt3) throws IOException {
-
-        try (Scanner myScan = new Scanner(myFile)) {
-
-            ArrayList<String> fileLine = new ArrayList<>();
-
-            // Populating ArrayList with file line scans
-            while (myScan.hasNextLine()) {
-                fileLine.add(myScan.nextLine());
-            }
-            // Converting ArrayList to object array
-            Object[] objects = fileLine.toArray();
-
-            // Displaying elements
-            txt1.setText(String.valueOf(objects[0]));
-            txt2.setText(String.valueOf(objects[1]));
-            txt3.setText(String.valueOf(objects[2]));
-        }
     }
 
     public static void main(String[] args) {
