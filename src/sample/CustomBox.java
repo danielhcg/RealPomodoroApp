@@ -33,7 +33,9 @@ import static javafx.scene.paint.Color.rgb;
 
 public class CustomBox {
 
-    public static String display() throws FileNotFoundException {
+    private static TextField testField;
+
+    public static String display(String pomTime, String shortTime, String longTime) throws FileNotFoundException {
 
         //AtomicBoolean answer = new AtomicBoolean(false);  // To check whether accept button was selected
 
@@ -65,6 +67,8 @@ public class CustomBox {
         TextField lngBkTF = new TextField();              // TextField for long break ui
         GridPane customTimerPane = new GridPane();        // Creating a new GridPane
 
+        testField = new TextField();
+
         Button saveButton2 = new Button();
         ImageView saveButtonImageView = new ImageView(saveButton);
         saveButton2.setGraphic(saveButtonImageView);
@@ -79,11 +83,6 @@ public class CustomBox {
         ImageView acceptButtonImageView = new ImageView(acceptButton);
         acceptButton2.setGraphic(acceptButtonImageView);
         acceptButton2.setPadding(inset1);
-
-        // Setting text fields with initial values
-        pomTxtFld.setText("25");
-        shtBKTF.setText("15");
-        lngBkTF.setText("5");
 
 
 
@@ -106,6 +105,15 @@ public class CustomBox {
         };
         saveButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, save2Event);
 
+        // Default values for text fields
+        String defaultPom = "25";
+        String defaultShort = "5";
+        String defaultLong = "15";
+
+        pomTxtFld.setText(defaultPom);
+        shtBKTF.setText(defaultShort);
+        lngBkTF.setText(defaultLong);
+
         // Event handler to populate text fields by loading a text file
         EventHandler<MouseEvent> load2Event = mouseEvent12 -> {
 
@@ -127,11 +135,23 @@ public class CustomBox {
         };
         loadButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, load2Event);
 
+        //boolean isDefaultPom = null;
+        boolean isDefaultShort;
+        boolean isDefaultLong;
+
+//        if (pomTxtFld.getText().equals(defaultPom))
+//            isDefaultPom = true;
+        if (shtBKTF.getText().equals(defaultShort))
+            isDefaultShort = true;
+        if (lngBkTF.getText().equals(defaultLong))
+            isDefaultLong = true;
+
+
+
         // Event handler for accept button
         EventHandler<MouseEvent> accept2Event = mouseEvent3 -> {
-
-            //answer.set(true);
-
+//            if (isDefaultPom != true)
+//                System.out.println("not true");
             customTimerStage.close();
         };
         acceptButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, accept2Event);
@@ -189,6 +209,7 @@ public class CustomBox {
         customTimerPane.add(shtBKTF,        0, 3);
         customTimerPane.add(lngBreakLabel,  0, 4);
         customTimerPane.add(lngBkTF,        0, 5);
+        customTimerPane.add(testField, 0, 6);
         customTimerPane.add(saveButton2,    1, 6);
         customTimerPane.add(loadButton2,    1, 7);
         customTimerPane.add(acceptButton2,  1, 8);
@@ -198,7 +219,11 @@ public class CustomBox {
         customTimerStage.showAndWait();  // Displaying stage
                                          // Blocks user interaction until info window is closed
 
-        String returnValue = pomTxtFld.getText() + "\n" + shtBKTF.getText() + "\n" + lngBkTF.getText();
+        pomTime = pomTxtFld.getText();
+        shortTime = shtBKTF.getText();
+        longTime = lngBkTF.getText();
+
+        String returnValue = pomTime + "\n" + shortTime + "\n" + longTime;
 
         return returnValue;
 

@@ -45,7 +45,9 @@ public class Main extends Application {
         /**-------------------------------------Variable Declarations-------------------------------------------*/
 
         // To hold the times that the user specifies
-        String duration, shortBreak, longBreak;
+        String duration = "25";
+        String shortBreak = "5";
+        String longBreak = "15";
 
         // Creating colors to use in app
         Color lightRedColor = rgb(197, 94, 94);
@@ -341,10 +343,13 @@ public class Main extends Application {
         // Event handler that invokes the InfoBox class and calls the display method
         whatIsToggle.setOnAction(e -> InfoBox.display());
 
+        // String to use to set the timer
+        //String timerString;
+
         // Event handler that invokes the CustomBox class and calls the display method
         customToggle.setOnAction(e -> {
             try {
-                System.out.println(CustomBox.display());
+                System.out.println(CustomBox.display(duration, shortBreak, longBreak));
             } catch (FileNotFoundException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
             }
