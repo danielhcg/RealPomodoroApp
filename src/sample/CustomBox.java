@@ -27,12 +27,15 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static javafx.scene.paint.Color.rgb;
 
 public class CustomBox {
 
-    public static void display() throws FileNotFoundException {
+    public static String display() throws FileNotFoundException {
+
+        //AtomicBoolean answer = new AtomicBoolean(false);  // To check whether accept button was selected
 
         Color lightRedColor = rgb(197, 94, 94);
         Color offWhiteColor = rgb(255, 237, 229);
@@ -45,6 +48,10 @@ public class CustomBox {
         FileInputStream iStream21 = new FileInputStream(
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\loadButton.png");
         Image loadButton = new Image(iStream21);
+
+        FileInputStream iStream22 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\acceptButton.png");
+        Image acceptButton = new Image(iStream22);
 
 
         Stage customTimerStage = new Stage();             // Creating a stage
@@ -67,6 +74,11 @@ public class CustomBox {
         ImageView loadButtonImageView = new ImageView(loadButton);
         loadButton2.setGraphic(loadButtonImageView);
         loadButton2.setPadding(inset1);
+
+        Button acceptButton2 = new Button();
+        ImageView acceptButtonImageView = new ImageView(acceptButton);
+        acceptButton2.setGraphic(acceptButtonImageView);
+        acceptButton2.setPadding(inset1);
 
         // Setting text fields with initial values
         pomTxtFld.setText("25");
@@ -114,6 +126,15 @@ public class CustomBox {
             }
         };
         loadButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, load2Event);
+
+        // Event handler for accept button
+        EventHandler<MouseEvent> accept2Event = mouseEvent3 -> {
+
+            //answer.set(true);
+
+            customTimerStage.close();
+        };
+        acceptButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, accept2Event);
 
 
         // Removing default focus from pomTxtFld on window open
@@ -170,11 +191,16 @@ public class CustomBox {
         customTimerPane.add(lngBkTF,        0, 5);
         customTimerPane.add(saveButton2,    1, 6);
         customTimerPane.add(loadButton2,    1, 7);
+        customTimerPane.add(acceptButton2,  1, 8);
 
         // Adding pane to a new scene and setting scene to the stage
         customTimerStage.setScene(new Scene(customTimerPane, 615, 330));
         customTimerStage.showAndWait();  // Displaying stage
                                          // Blocks user interaction until info window is closed
+
+        String returnValue = pomTxtFld.getText() + "\n" + shtBKTF.getText() + "\n" + lngBkTF.getText();
+
+        return returnValue;
 
     }
 

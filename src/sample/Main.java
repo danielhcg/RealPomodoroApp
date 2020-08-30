@@ -44,6 +44,9 @@ public class Main extends Application {
 
         /**-------------------------------------Variable Declarations-------------------------------------------*/
 
+        // To hold the times that the user specifies
+        String duration, shortBreak, longBreak;
+
         // Creating colors to use in app
         Color lightRedColor = rgb(197, 94, 94);
 
@@ -341,7 +344,7 @@ public class Main extends Application {
         // Event handler that invokes the CustomBox class and calls the display method
         customToggle.setOnAction(e -> {
             try {
-                CustomBox.display();
+                System.out.println(CustomBox.display());
             } catch (FileNotFoundException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
             }
