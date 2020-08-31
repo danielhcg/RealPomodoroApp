@@ -106,13 +106,13 @@ public class CustomBox {
         saveButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, save2Event);
 
         // Default values for text fields
-        String defaultPom = "25";
-        String defaultShort = "5";
-        String defaultLong = "15";
+//        String defaultPom = "25";
+//        String defaultShort = "5";
+//        String defaultLong = "15";
 
-        pomTxtFld.setText(defaultPom);
-        shtBKTF.setText(defaultShort);
-        lngBkTF.setText(defaultLong);
+        pomTxtFld.setText(pomTime);
+        shtBKTF.setText(shortTime);
+        lngBkTF.setText(longTime);
 
         // Event handler to populate text fields by loading a text file
         EventHandler<MouseEvent> load2Event = mouseEvent12 -> {
@@ -134,17 +134,6 @@ public class CustomBox {
             }
         };
         loadButton2.addEventFilter(MouseEvent.MOUSE_CLICKED, load2Event);
-
-        //boolean isDefaultPom = null;
-        boolean isDefaultShort;
-        boolean isDefaultLong;
-
-//        if (pomTxtFld.getText().equals(defaultPom))
-//            isDefaultPom = true;
-        if (shtBKTF.getText().equals(defaultShort))
-            isDefaultShort = true;
-        if (lngBkTF.getText().equals(defaultLong))
-            isDefaultLong = true;
 
 
 
@@ -223,7 +212,7 @@ public class CustomBox {
         shortTime = shtBKTF.getText();
         longTime = lngBkTF.getText();
 
-        String returnValue = pomTime + "\n" + shortTime + "\n" + longTime;
+        String returnValue = pomTime + " " + shortTime + " " + longTime;
 
         return returnValue;
 

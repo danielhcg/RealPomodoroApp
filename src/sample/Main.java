@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.animation.Timeline;
 import javafx.animation.KeyValue;
@@ -343,17 +344,62 @@ public class Main extends Application {
         // Event handler that invokes the InfoBox class and calls the display method
         whatIsToggle.setOnAction(e -> InfoBox.display());
 
-        // String to use to set the timer
-        //String timerString;
+//        System.out.println(CustomBox.display(duration, shortBreak, longBreak));
+//        String totalTime;
+//        totalTime = CustomBox.display(duration, shortBreak, longBreak);
+//        String[] timeArray = totalTime.split(" ");
+//        duration = timeArray[0];
+//        shortBreak = timeArray[1];
+//        longBreak = timeArray[2];
+
+//        AtomicReference<String> duration3 = null;
+        String duration3;
+        String shortBreak3;
+        String longBreak3;
 
         // Event handler that invokes the CustomBox class and calls the display method
         customToggle.setOnAction(e -> {
             try {
-                System.out.println(CustomBox.display(duration, shortBreak, longBreak));
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
+                String duration2 = duration;
+                String shortBreak2 = shortBreak;
+                String longBreak2 = longBreak;
+                //System.out.println(CustomBox.display(duration2, shortBreak2, longBreak2));
+
+                String totalTime;
+                totalTime = CustomBox.display(duration2, shortBreak2, longBreak2);
+                String[] timeArray = totalTime.split(" ");
+
+
+                duration2 = timeArray[0];
+                shortBreak2 = timeArray[1];
+                longBreak2 = timeArray[2];
+
+//                assert false;
+//                duration3.set(duration2);
+
+                System.out.println("These are the times in try block: " + duration2 +" "+ shortBreak2 +" "+ longBreak2);
+
+
+                //duration = duration2;
+
+
+            } catch (Exception e1) { }
+            //System.out.println(CustomBox.display(duration, shortBreak, longBreak));
         });
+
+//        System.out.println(duration3);
+
+
+//        String duration2 = duration;
+//        String shortBreak2 = shortBreak;
+//        String longBreak2 = longBreak;
+//
+//        customToggle.setOnAction(e -> {
+//            String totalTime = CustomBox.display(duration2, shortBreak2, longBreak2);
+//        });
+
+
+
 
 
         primaryStage.setTitle("Pomodoro Timer");
