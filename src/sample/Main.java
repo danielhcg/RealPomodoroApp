@@ -39,16 +39,20 @@ public class Main extends Application {
     private final Label timerLabel = new Label();
     private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
+    // To hold the times that the user specifies
+    String duration = "25";
+    String shortBreak = "5";
+    String longBreak = "15";
+
+    int durationInt, shortBreakInt, longBreakInt;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
         /**-------------------------------------Variable Declarations-------------------------------------------*/
 
-        // To hold the times that the user specifies
-        String duration = "25";
-        String shortBreak = "5";
-        String longBreak = "15";
+
 
         // Creating colors to use in app
         Color lightRedColor = rgb(197, 94, 94);
@@ -122,6 +126,16 @@ public class Main extends Application {
         FileInputStream iStream19 = new FileInputStream(
                 "C:\\Users\\Danny\\Desktop\\RealPomApp\\unselectedWhatIs.png");
         Image unselectedWhatIs = new Image(iStream19);     // Unselected what is button image
+        FileInputStream iStream20 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\restartButton.png");
+        Image restartButtonImage = new Image(iStream20);     // Restart timer button image
+        FileInputStream iStream21 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\startButton.png");
+        Image startButtonImage = new Image(iStream21);     // Start timer button image
+        FileInputStream iStream22 = new FileInputStream(
+                "C:\\Users\\Danny\\Desktop\\RealPomApp\\pauseButton.png");
+        Image pauseButtonImage = new Image(iStream22);     // Pause timer button image
+
 
         GridPane root = new GridPane();          // Creating a grid pane
 
@@ -135,6 +149,9 @@ public class Main extends Application {
         ToggleButton loopToggle     = new ToggleButton();
         ToggleButton whatIsToggle   = new ToggleButton();
         ToggleButton customToggle   = new ToggleButton();
+        Button       restartButton  = new Button();
+        Button       startButton    = new Button();
+        Button       pauseButton    = new Button();
 
         // Grouping toggle buttons together
         ToggleGroup toggleGroup = new ToggleGroup();
@@ -154,6 +171,9 @@ public class Main extends Application {
         ImageView loopToggleIV   = new ImageView();
         ImageView whatIsToggleIV = new ImageView();
         ImageView customToggleIV = new ImageView();
+        ImageView restartTimerIV = new ImageView(restartButtonImage);
+        ImageView startTimerIV   = new ImageView(startButtonImage);
+        ImageView pauseTimerIV   = new ImageView(pauseButtonImage);
 
 
         // Setting toggle effect image views to respective toggle button nodes
@@ -163,15 +183,22 @@ public class Main extends Application {
         loopToggle.     setGraphic(loopToggleIV);
         whatIsToggle.   setGraphic(whatIsToggleIV);
         customToggle.   setGraphic(customToggleIV);
+        restartButton.  setGraphic(restartTimerIV);
+        startButton.    setGraphic(startTimerIV);
+        pauseButton.    setGraphic(pauseTimerIV);
+
 
 
         // Setting the padding for each toggle button bc there's a border that forms when I display the images
-        pomodoroToggle.setPadding(inset1);
-        shortToggle.setPadding(inset1);
-        longToggle.setPadding(inset1);
-        loopToggle.setPadding(inset1);
-        whatIsToggle.setPadding(inset1);
-        customToggle.setPadding(inset1);
+        pomodoroToggle .setPadding(inset1);
+        shortToggle    .setPadding(inset1);
+        longToggle     .setPadding(inset1);
+        loopToggle     .setPadding(inset1);
+        whatIsToggle   .setPadding(inset1);
+        customToggle   .setPadding(inset1);
+        restartButton  .setPadding(inset1);
+        startButton    .setPadding(inset1);
+        pauseButton    .setPadding(inset1);
 
 
         // Binding selection images to respective toggle image views for each button
@@ -318,6 +345,9 @@ public class Main extends Application {
         root.add(whatIsToggle,  2, 0);
         root.add(longToggle,    2, 1);
         root.add(loopToggle,    3, 1);
+        root.add(restartButton,0, 4);
+        root.add(startButton,  0, 5);
+        root.add(pauseButton,  0, 6);
 
         // Setting spacing between nodes on root pane
         root.setHgap(10);
@@ -328,6 +358,26 @@ public class Main extends Application {
         timerLabel.textProperty().bind(timeSeconds.asString()); // Bind timerLabel text property to timeSeconds property
         timerLabel.setTextFill(Color.WHITE);
         timerLabel.setStyle("-fx-font-size: 4em;");
+
+        restartButton.setOnAction(actionEvent -> {
+            System.out.println("restart button works");
+        });
+
+        startButton.setOnAction(actionEvent -> {
+            System.out.println("start button works");
+
+            // Converting string values of times to integers
+            durationInt = Integer.parseInt(duration);
+            shortBreakInt = Integer.parseInt(shortBreak);
+            longBreakInt = Integer.parseInt(longBreak);
+
+            System.out.println(durationInt);
+
+        });
+
+        pauseButton.setOnAction(actionEvent -> {
+            System.out.println("Puase button works");
+        });
 
         longToggle.setOnAction(actionEvent -> {
             if (timeline != null) {
@@ -359,10 +409,12 @@ public class Main extends Application {
 
         // Event handler that invokes the CustomBox class and calls the display method
         customToggle.setOnAction(e -> {
+            String duration2 = duration;
+            String shortBreak2 = shortBreak;
+            String longBreak2 = longBreak;
+
             try {
-                String duration2 = duration;
-                String shortBreak2 = shortBreak;
-                String longBreak2 = longBreak;
+
                 //System.out.println(CustomBox.display(duration2, shortBreak2, longBreak2));
 
                 String totalTime;
@@ -385,7 +437,26 @@ public class Main extends Application {
 
             } catch (Exception e1) { }
             //System.out.println(CustomBox.display(duration, shortBreak, longBreak));
+            System.out.println("These are the times outside try block: " + duration2 +" "+ shortBreak2 +" "+ longBreak2);
+
+            duration = duration2;
+            shortBreak = shortBreak2;
+            longBreak = longBreak2;
+
+            //System.out.println(duration);
+
         });
+//        System.out.println("Times outide event handler before manipulation: " + duration +" "+ shortBreak +" "+ longBreak);
+//        Thread.sleep(5000);
+//        System.out.println("These are the times outside the event handler: " + duration +" "+ shortBreak +" "+ longBreak);
+//
+//
+
+        if (duration != "25") {
+            System.out.println("You did it!");
+        } else {
+            System.out.println("You didn't do it, you suck");
+        }
 
 //        System.out.println(duration3);
 
@@ -406,7 +477,7 @@ public class Main extends Application {
         // Creating a dark red background to set to the main stage
         Background darkRedBackground = new Background(new BackgroundFill(lightRedColor, CornerRadii.EMPTY, Insets.EMPTY));
         root.setBackground(darkRedBackground);   // Set the color of the background
-        primaryStage.setScene(new Scene(root, 1500, 700));
+        primaryStage.setScene(new Scene(root, 1500, 800));
         primaryStage.show();
     }
 
