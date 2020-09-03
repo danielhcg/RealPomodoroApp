@@ -35,6 +35,11 @@ public class Main extends Application {
 
     // Variables for timer
     private static final Integer STARTTIME = 1500;
+
+    // Creating Integer variables to hold hours, minutes, and seconds.
+//    private static final Integer STARTIME_HR
+
+
     private Timeline timeline;
     private final Label timerLabel = new Label();
     private final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
