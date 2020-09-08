@@ -1,15 +1,16 @@
 package testCode;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -18,89 +19,110 @@ import java.text.NumberFormat;
 
 public class TestOne extends Application {
 
-    // globals
-    private final Integer STARTTIME = 60;  // value can't be change
-    private Integer seconds = STARTTIME;   // copy of value can
-    private Label countDownLabel = new Label();
 
-    private final Integer STARTTIMEMINUTES = 2;
-    private Integer minutes = STARTTIMEMINUTES;
+    // Constant values for time
+    private final Integer START_TIME_MINUTES = 4;
+    private final Integer START_TIME_SECONDS = 5;
 
-    private NumberFormat formatter = new DecimalFormat("00");
-//    String secondsString = formatter.format(seconds);
+    // Modifiable copies of constants to manipulate
+    private Integer minutes = START_TIME_MINUTES;
+    private Integer seconds = START_TIME_SECONDS;
 
+    private Integer secondsCopy = START_TIME_SECONDS;
 
+    // Creating format in which integers are to be displayed
+    //private final NumberFormat formatter = new DecimalFormat("00");
 
-    private String minuteTxt = new String();
-    private String secondTxt = new String();
+    // Storing string value copies of constants in labels
+    private final Label minuteLabel = new Label(minutes.toString());
+    private final Label secondLabel = new Label(seconds.toString());
 
+    // Creating a colon label to add to layout
+    private final Label colonLabel = new Label(":");
+
+    // Creating a label made up of copies of constants
+    private final Label countDownLabel = new Label("Countdown-> " + minuteLabel.getText() + ":" + secondLabel.getText());
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Timer Example");  // Title
 
-        minuteTxt = formatter.format(minutes);
-        secondTxt = formatter.format(seconds);
+        System.out.println(countDownLabel);
 
-        System.out.println(minuteTxt);
-
-        Button startButton = new Button("Start" );
-        countDownLabel.setText("Countdown-> " + minuteTxt + ":" + secondTxt);
-        HBox layout = new HBox(5);
-        layout.getChildren().addAll(countDownLabel, startButton);
-        Scene myScene = new Scene(layout, 200, 100);
-        primaryStage.setScene(myScene);
-        primaryStage.setTitle("Timer Example");
-
-        startButton.setOnAction(actionEvent -> {
-            doTime();
+        Button startButton = new Button("Start" );  // Button
+        startButton.setOnAction(actionEvent -> {  // Event Handler
+            doTime();  // Calling doTime() function
         });
 
-        primaryStage.show();
+        HBox layout = new HBox(startButton, minuteLabel, colonLabel, secondLabel);  // Layout
 
+        Scene myScene = new Scene(layout, 200, 100); // Adding layout to scene
+        primaryStage.setScene(myScene);  // Setting scene to stage
+        primaryStage.show();  // Displaying stage
     }
 
+    // Where all the magic happens
     private void doTime() {
 
-        Timeline time = new Timeline();   // creating a new timeline animation
-        time.setCycleCount(Timeline.INDEFINITE);  // setting animation to run forever
+        Timeline minuteTime = new Timeline();
+        minuteTime.setCycleCount(Timeline.INDEFINITE);
 
-        // Setting end point of timer, stop timer, wherever it may by, to make it begin at the beginning later on
-        if (time != null)
-            time.stop();
+        Timeline secondTime = new Timeline();
+        secondTime.setCycleCount(Timeline.INDEFINITE);
 
-        // Defining target state of a node at 1 second
-        // attaching event handler to keyframe, every 1 second the key frame does something
-        KeyFrame frame = new KeyFrame(Duration.seconds(60), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                minutes--;
-                minuteTxt = formatter.format(minutes);
-//                countDownLabel.setText("Countdown-> " + minuteTxt + ":" + secondTxt);
-                if (minutes <= 0) {
-                    time.stop();
+        if (minuteTime != null && secondTime != null) {}
+            minuteTime.stop();
+
+
+        KeyFrame minuteFrame = new KeyFrame(Duration.seconds(5), actionEvent -> {
+            minutes--;
+            minuteLabel.setText(minutes.toString());
+            if (minutes <= 0) {
+                minuteTime.stop();
+                Alert minutesAlert = new Alert(Alert.AlertType.INFORMATION);
+                minutesAlert.setHeaderText("Minutes KeyFrame Ended");
+                minutesAlert.show();
+            }
+        });
+
+
+        KeyFrame secondFrame = new KeyFrame(Duration.seconds(1), actionEvent -> {
+            seconds--;
+            secondLabel.setText(seconds.toString());
+
+                // continues seconds timer until minute timer is up
+                if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.STOPPED) {
+
+                    secondTime.stop();
+                    Alert secondsAlert = new Alert(Alert.AlertType.INFORMATION);
+                    secondsAlert.setHeaderText("Seconds KeyFrame Ended");
+                    secondsAlert.show();
+
+
+                } //else {
+//                    seconds = secondsCopy;
+//                    seconds--;
+//                    secondLabel.setText(seconds.toString());
+//                }
+
+                if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.RUNNING){
+                    seconds = START_TIME_SECONDS;
                 }
-
-            }
         });
+        
+        minuteTime.getKeyFrames().add(minuteFrame);
+        minuteTime.playFromStart(); // execute the timeline
 
-        KeyFrame frame2 = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                seconds--;
-                secondTxt = formatter.format(seconds);
-                countDownLabel.setText("Countdown-> " + minuteTxt + ":" + secondTxt);
+//         Not needed
+//        secondTime.setOnFinished(actionEvent -> {
+//            minuteTime.statusProperty(Animation.Status.STOPPED);
+//            if (minuteTime.getStatus() == Animation.Status.STOPPED) {
+//                secondTime.playFromStart();
+//            }
+//        });
 
-
-            }
-        });
-
-        if (seconds <= 0 && minutes <= 0){
-            time.stop();
-        }
-
-
-        time.getKeyFrames().addAll(frame2, frame);
-        time.playFromStart(); // execute the timeline
+        secondTime.getKeyFrames().add(secondFrame);
+        secondTime.playFromStart();
     }
 
     public static void main(String[] args) {
@@ -108,5 +130,29 @@ public class TestOne extends Application {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
