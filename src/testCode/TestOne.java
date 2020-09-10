@@ -49,7 +49,7 @@ public class TestOne extends Application {
         pauseButton.setOnAction(actionEvent -> { pauseTime(); });
 
         // Changing display of seconds when minute mark reached
-        if (seconds == 60)
+        if (seconds == 60 || seconds == 50)
             secondLabel.setText("00");
 
         HBox layout = new HBox(startButton, pauseButton, minuteLabel, colonLabel, secondLabel);  // Layout
@@ -59,14 +59,11 @@ public class TestOne extends Application {
         primaryStage.show();  // Displaying stage
     }
 
-    private void pauseTime(){
-        minuteTime.pause();
 
-        secondTime.pause();
-    }
 
     // Where all the magic happens
     private void doTime() {
+
 
         // Creating a minute timeline
 //        Timeline minuteTime = new Timeline();
@@ -76,44 +73,65 @@ public class TestOne extends Application {
 //        Timeline secondTime = new Timeline();
         secondTime.setCycleCount(Timeline.INDEFINITE);
 
+        // KeyFrame to decrement minuteTime every minute
+        KeyFrame minuteFrame = new KeyFrame(Duration.seconds(60), actionEvent -> {
+
+            minutes--;
+            minuteLabel.setText(minutes.toString()); // Modifying minute label
+
+            if (minutes <= 0)
+                minuteTime.stop();
+        });
 
 
-        if (pauseButton.isPressed()){
-            minuteTime.playFrom(minuteTime.getCurrentTime());
-            secondTime.playFrom(secondTime.getCurrentTime());
-        } else {
-            // KeyFrame to decrement minuteTime every minute
-            KeyFrame minuteFrame = new KeyFrame(Duration.seconds(60), actionEvent -> {
-                minutes--;
-                minuteLabel.setText(minutes.toString()); // Modifying minute label
-                if (minutes <= 0)
-                    minuteTime.stop();
-            });
+        // Copy of minute frame to not change minutes when pause button is pressed
+        KeyFrame minuteFrame2 = new KeyFrame(Duration.seconds(60), actionEvent -> {
 
-            // KeyFrame to decrement secondTime every second
-            KeyFrame secondFrame = new KeyFrame(Duration.seconds(1), actionEvent -> {
-                seconds--;  // decrement seconds
-                secondLabel.setText(formatter.format(seconds)); // modify seconds label
+            //minutes--;
+            minuteLabel.setText(minutes.toString()); // Modifying minute label
 
-                // stops secondTime if seconds reaches 0 and minuteTime stopeed
-                if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.STOPPED)
-                    secondTime.stop();
+//            if (minutes <= 0)
+//                minuteTime.stop();
+        });
 
-                // if secondTime reaches 0, but minuteTime is still running, reset seconds
-                if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.RUNNING)
-                    seconds = START_TIME_SECONDS;
 
-                // Changes seconds label to 00 when minute mark is reaches
-                if (seconds == 60)
-                    secondLabel.setText("00");
-            });
 
+        // KeyFrame to decrement secondTime every second
+        KeyFrame secondFrame = new KeyFrame(Duration.seconds(1), actionEvent -> {
+
+            seconds--;  // decrement seconds
+            secondLabel.setText(formatter.format(seconds)); // modify seconds label
+
+
+            // stops secondTime if seconds reaches 0 and minuteTime stopped
+            if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.STOPPED)
+                secondTime.stop();
+
+            // if secondTime reaches 0, but minuteTime is still running, reset seconds
+            if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.RUNNING)
+                seconds = START_TIME_SECONDS;
+
+        });
+
+
+
+        secondTime.getKeyFrames().add(secondFrame);
+        secondTime.playFromStart();
+
+        if (!(pauseButton.isPressed())) {
             minuteTime.getKeyFrames().add(minuteFrame); // Adding frame to timeline
             minuteTime.playFrom(Duration.seconds(59)); // execute the timeline
-
-            secondTime.getKeyFrames().add(secondFrame);
-            secondTime.playFromStart();
+        } else {
+            minuteTime.getKeyFrames().add(minuteFrame2);
+//            minuteTime.play();
         }
+
+    }
+
+    private void pauseTime(){
+        minuteTime.pause();
+
+        secondTime.pause();
     }
 
     public static void main(String[] args) {
