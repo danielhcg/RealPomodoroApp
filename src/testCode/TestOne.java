@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,16 +39,19 @@ public class TestOne extends Application {
     private Timeline secondTime = new Timeline();
 
     private Button pauseButton = new Button("Pause");
+    private Button startButton = new Button("Start" );  // Button
+
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         primaryStage.setTitle("Timer Example");  // Title
 
-        Button startButton = new Button("Start" );  // Button
         startButton.setOnAction(actionEvent -> { doTime(); });
 
         pauseButton.setOnAction(actionEvent -> { pauseTime(); });
+
 
         // Changing display of seconds when minute mark reached
         if (seconds == 60 || seconds == 50)
@@ -59,18 +64,13 @@ public class TestOne extends Application {
         primaryStage.show();  // Displaying stage
     }
 
-
-
     // Where all the magic happens
     private void doTime() {
 
 
-        // Creating a minute timeline
-//        Timeline minuteTime = new Timeline();
-        minuteTime.setCycleCount(Timeline.INDEFINITE);
 
-        // Creating a seconds timeline
-//        Timeline secondTime = new Timeline();
+        // Setting indefinite cycle time for both minutes and seconds
+        minuteTime.setCycleCount(Timeline.INDEFINITE);
         secondTime.setCycleCount(Timeline.INDEFINITE);
 
         // KeyFrame to decrement minuteTime every minute
@@ -84,24 +84,13 @@ public class TestOne extends Application {
         });
 
 
-        // Copy of minute frame to not change minutes when pause button is pressed
-        KeyFrame minuteFrame2 = new KeyFrame(Duration.seconds(60), actionEvent -> {
-
-            //minutes--;
-            minuteLabel.setText(minutes.toString()); // Modifying minute label
-
-//            if (minutes <= 0)
-//                minuteTime.stop();
-        });
-
-
-
         // KeyFrame to decrement secondTime every second
         KeyFrame secondFrame = new KeyFrame(Duration.seconds(1), actionEvent -> {
 
             seconds--;  // decrement seconds
-            secondLabel.setText(formatter.format(seconds)); // modify seconds label
 
+
+            secondLabel.setText(formatter.format(seconds)); // modify seconds label
 
             // stops secondTime if seconds reaches 0 and minuteTime stopped
             if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.STOPPED)
@@ -110,27 +99,26 @@ public class TestOne extends Application {
             // if secondTime reaches 0, but minuteTime is still running, reset seconds
             if (seconds <= 0 && minuteTime.getStatus() == Animation.Status.RUNNING)
                 seconds = START_TIME_SECONDS;
-
         });
 
-
-
+        minuteTime.getKeyFrames().add(minuteFrame); // Adding frame to timeline
         secondTime.getKeyFrames().add(secondFrame);
+
+//        minuteTime.play();
+//        secondTime.play();
+
+        minuteTime.playFrom(Duration.seconds(59));
         secondTime.playFromStart();
 
-        if (!(pauseButton.isPressed())) {
-            minuteTime.getKeyFrames().add(minuteFrame); // Adding frame to timeline
-            minuteTime.playFrom(Duration.seconds(59)); // execute the timeline
-        } else {
-            minuteTime.getKeyFrames().add(minuteFrame2);
-//            minuteTime.play();
+        if (pauseButton.isPressed()){
+            minuteTime.playFrom(minuteFrame.getTime());
+            secondTime.playFrom(secondFrame.getTime());
         }
 
     }
 
     private void pauseTime(){
         minuteTime.pause();
-
         secondTime.pause();
     }
 
